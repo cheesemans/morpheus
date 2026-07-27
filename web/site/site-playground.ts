@@ -309,7 +309,7 @@ class SitePlayground extends HTMLElement {
 				input.setAttribute("size", "sm");
 				input.setAttribute("aria-label", name);
 				input.dataset.signal = name;
-				input.toggleAttribute("checked", value);
+				input.setAttribute("checked", value ? "true" : "false");
 				label.appendChild(input);
 			} else {
 				const input = document.createElement("neo-textinput");
@@ -353,7 +353,12 @@ class SitePlayground extends HTMLElement {
 			const input = byName.get(name);
 			if (!input) continue;
 			if (typeof value === "boolean") {
-				if (input.hasAttribute("checked") !== value) input.toggleAttribute("checked", value);
+				// Write the explicit false form. Removing `checked` is not a
+				// command to uncheck, so neo-switch keeps its intent and
+				// re-reflects the attribute, pinning the row on.
+				if (input.hasAttribute("checked") !== value) {
+					input.setAttribute("checked", value ? "true" : "false");
+				}
 			} else {
 				const str = value == null ? "" : String(value);
 				if (input.getAttribute("value") !== str) input.setAttribute("value", str);
