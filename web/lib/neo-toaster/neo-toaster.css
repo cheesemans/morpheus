@@ -10,7 +10,7 @@
  *     stack. Positive `stack` values keep that many full toasts
  *     visible, then tuck up to two older toasts behind the last full
  *     one as peek cards.
- *   • Hovering, focusing, or clicking the host adds [data-neo-expanded]
+ *   • Hovering, focusing, or clicking the host adds :state(expanded)
  *     to it; every toast moves to its measured per-slot offset
  *     (cumulative heights from JS) at scale 1, i.e. a non-overlapping
  *     vertical list. All auto-dismiss timers pause for the duration.
@@ -176,22 +176,22 @@ neo-toaster > neo-toast[data-neo-toast-hidden] {
  * to its measured offset along the anchor axis, scale resets to 1,
  * every toast becomes pointer-interactive again. The host
  * becomes scrollable. */
-neo-toaster[data-neo-expanded] {
+neo-toaster:state(expanded) {
 	pointer-events: auto;
 	max-height: var(--neo-toaster-max-height, 75vh);
 	overflow-y: auto;
 }
 
-neo-toaster[data-neo-expanded] > neo-toast {
+neo-toaster:state(expanded) > neo-toast {
 	opacity: 1;
 	pointer-events: auto;
 }
 
-neo-toaster[data-neo-expanded][position*="bottom"] > neo-toast {
+neo-toaster:state(expanded)[position*="bottom"] > neo-toast {
 	transform: translateY(calc(-1 * var(--toast-expanded-offset, 0px))) scale(1);
 }
 
-neo-toaster[data-neo-expanded][position*="top"] > neo-toast {
+neo-toaster:state(expanded)[position*="top"] > neo-toast {
 	transform: translateY(var(--toast-expanded-offset, 0px)) scale(1);
 }
 

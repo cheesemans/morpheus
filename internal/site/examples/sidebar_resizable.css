@@ -20,7 +20,7 @@
 /* neo-sidebar's height:100% resolves to auto when the stage has no
    definite height; align-self:stretch lets the flex line stretch fill
    the in-flow sidebar so the sibling can't overhang its border. */
-.sb-shell > neo-sidebar:not([overlay]):not([data-neo-sidebar-overlay]) {
+.sb-shell > neo-sidebar:not(:state(overlay)) {
 	height: auto;
 	align-self: stretch;
 }
@@ -33,7 +33,7 @@
 }
 
 .sb-shell > neo-resizable:has(> neo-sidebar:defined:not([open])),
-.sb-shell > neo-resizable:has(> neo-sidebar[data-neo-sidebar-overlay]) {
+.sb-shell > neo-resizable:has(> neo-sidebar:state(overlay)) {
 	width: 0 !important;
 	min-width: 0 !important;
 	max-width: 0 !important;
@@ -41,7 +41,7 @@
 }
 
 .sb-shell > neo-resizable:has(> neo-sidebar:defined:not([open])) > [data-neo-resize-handle],
-.sb-shell > neo-resizable:has(> neo-sidebar[data-neo-sidebar-overlay]) > [data-neo-resize-handle] {
+.sb-shell > neo-resizable:has(> neo-sidebar:state(overlay)) > [data-neo-resize-handle] {
 	display: none;
 }
 

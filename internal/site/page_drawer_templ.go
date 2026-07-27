@@ -720,6 +720,10 @@ var drawerDoc = ComponentDoc{
 				"<code>[data-neo-drawer-touch-ignore]</code> descendant) " +
 				"are ignored. Disabled when <code>dismissible=\"false\"</code>.")},
 	},
+	States: []DocState{
+		{Name: "dragging",
+			Description: templ.Raw("Set while a touch-dismiss drag is in flight.")},
+	},
 	Slots: []DocSlot{
 		{Name: "default",
 			Description: templ.Raw("A <code>&lt;dialog&gt;</code> with optional <code>[data-neo-drawer-header]</code>, <code>[data-neo-drawer-body]</code>, <code>[data-neo-drawer-footer]</code> children.")},
@@ -886,7 +890,7 @@ func drawerAsyncFailureDemo() templ.Component {
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs("[data-neo-async-placeholder]")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 312, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 316, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
@@ -899,7 +903,7 @@ func drawerAsyncFailureDemo() templ.Component {
 		var templ_7745c5c3_Var39 string
 		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs("<div id=\"<host-id>-body\">")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 314, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 318, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 		if templ_7745c5c3_Err != nil {
@@ -912,7 +916,7 @@ func drawerAsyncFailureDemo() templ.Component {
 		var templ_7745c5c3_Var40 string
 		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs("[data-neo-popover-async-retry]")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 320, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 324, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 		if templ_7745c5c3_Err != nil {
@@ -925,7 +929,7 @@ func drawerAsyncFailureDemo() templ.Component {
 		var templ_7745c5c3_Var41 string
 		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(" ")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 324, Col: 37}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_drawer.templ`, Line: 328, Col: 37}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {

@@ -52,6 +52,16 @@ Either kind can also be driven from outside at runtime (author markup, a server 
 
 Attribute names are positive (`flip`, not `no-flip`), so a double negative never arises.
 
+### Internal state
+
+State the component derives at runtime and no template renders (overlay vs in-flow mode, a drag in flight, etc.) is not an attribute. It is a CSS custom state on the element's `ElementInternals`, selected as `:state(name)` and, from inside the element's own shadow root, `:host(:state(name))`.
+
+Requirement: a morph reconciles the light DOM against the server template and strips every attribute the template does not carry, while keeping the same element instance, so no lifecycle callback fires to restore it. A derived marker written as an attribute therefore disappears mid-interaction and every rule keyed on it stops matching. A custom state is not part of the light DOM: a morph cannot reach it, and nothing outside the component can set it.
+
+A state page CSS is meant to branch on is documented like an attribute, and renaming it is a breaking change. A state that only the component's own CSS reads (a one-frame transition suppression, an animation-direction flag) stays undocumented.
+
+Internal state a component sets on a child that is itself a kit element belongs to that child's `ElementInternals`, set through a method on the child, for the same reason. A generated node that no template renders (a backdrop, a drag proxy) keeps plain attributes: a morph deletes the node outright and the component rebuilds it.
+
 Disclosure state uses one attribute name, `open`, on every component that shows and hides content or a surface. `expanded` is used only where the state maps to `aria-expanded` on a `tree` or `treeitem`.
 
 The layout axis is the `orientation` enum: `horizontal` and `vertical` on components that arrange items along it (e.g. radio-group, toggle-group, tabs, carousel), plus `grid` on those that also lay out in two dimensions (e.g. navgroup, sortable). A single-value component with no items to arrange (e.g. slider, slider-range, progress) instead takes a positive `vertical` boolean, defaulting to horizontal. Where no behavior branches on the axis, `orientation` is a display attribute, not tracked state.
@@ -105,7 +115,7 @@ Three mechanisms customize a component's content.
 
 ## Styling
 
-- Style hooks are `[data-neo-<component>-<part>]` attribute marks, not CSS classes, so they survive a morph like any other attribute.
+- Style hooks are `[data-neo-<component>-<part>]` attribute marks, not CSS classes, so they survive a morph like any other attribute. A mark names a part of the markup (which element is the header, the trigger, the panel), never a runtime state; derived state is a custom state (see [Internal state](#internal-state)).
 - Theming uses CSS custom properties: `--neo-*` component tokens over `--page-*` page tokens. A theme overrides variables, not selectors.
 - The text and box row controls (button, toggle, text input, textarea, select, combobox) share one `size` scale, so a small or large button, input, and select still line up in the same row. Each step derives from the page spacing unit, so a theme's density change carries through every size. Small fixed-glyph controls (checkbox, radio, switch, rating, kbd) and the 2D color field carry their own sizing.
 - CSS that keys on a configuration boolean treats the explicit false form as off, not just absence.

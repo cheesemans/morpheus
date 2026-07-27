@@ -262,6 +262,12 @@ var sidebarDoc = ComponentDoc{
 				"any <code>[data-neo-sidebar-touch-ignore]</code> " +
 				"descendant) are ignored.")},
 	},
+	States: []DocState{
+		{Name: "overlay",
+			Description: templ.Raw("Set while the sidebar renders as a fixed overlay: <code>overlay</code> is pinned, or the parent's width sits at or below <code>overlay-breakpoint</code>. Page CSS branches its shell layout on this.")},
+		{Name: "dragging",
+			Description: templ.Raw("Set while a touch-dismiss drag is in flight.")},
+	},
 	Slots: []DocSlot{
 		{Name: "[data-neo-sidebar-header]",
 			Description: templ.Raw("Top section.")},

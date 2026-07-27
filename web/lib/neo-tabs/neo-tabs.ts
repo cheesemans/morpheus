@@ -1,9 +1,17 @@
 import { boolAttr, warnBadAxis } from "../command";
+import { setState } from "../internal-state";
 
 let nextTabsId = 0;
 
 export class NeoTabs extends HTMLElement {
 	static readonly observedAttributes = ["value", "orientation", "easing", "enter-animation", "exit-animation"];
+
+	#internals: ElementInternals;
+
+	constructor() {
+		super();
+		this.#internals = this.attachInternals();
+	}
 
 	#hostId = "";
 	#ready = false;
@@ -79,11 +87,11 @@ export class NeoTabs extends HTMLElement {
 		const rules: string[] = [];
 		if (enter) {
 			rules.push(
-				`${sel} > neo-tabpanel:not([hidden]):not([data-neo-leaving]) ` + `{ animation: ${enter} ${value} both; }`,
+				`${sel} > neo-tabpanel:not([hidden]):not(:state(leaving)) ` + `{ animation: ${enter} ${value} both; }`,
 			);
 		}
 		if (exit) {
-			rules.push(`${sel} > neo-tabpanel[data-neo-leaving] ` + `{ animation: ${exit} ${value} both; }`);
+			rules.push(`${sel} > neo-tabpanel:state(leaving) ` + `{ animation: ${exit} ${value} both; }`);
 		}
 		if (!enter && !exit) {
 			// Fall back to opacity crossfade via the [hidden] override.
@@ -197,15 +205,18 @@ export class NeoTabs extends HTMLElement {
 			tab.setAttribute("aria-controls", panelId);
 		}
 
-		// Direction derived from value transition (not DOM attr) so it
-		// survives morph wiping data-neo-direction.
+		// Direction derived from the value transition, and published as a
+		// custom state: an attribute would be wiped by the next morph
+		// mid-animation.
 		const newIdx = tabs.findIndex((t) => t.getAttribute("value") === value);
 		const oldIdx =
 			this.#previousActiveValue !== null
 				? tabs.findIndex((t) => t.getAttribute("value") === this.#previousActiveValue)
 				: -1;
 		if (newIdx >= 0 && oldIdx >= 0 && newIdx !== oldIdx) {
-			this.setAttribute("data-neo-direction", newIdx > oldIdx ? "forward" : "backward");
+			const forward = newIdx > oldIdx;
+			setState(this.#internals, "forward", forward);
+			setState(this.#internals, "backward", !forward);
 		}
 
 		const panels = this.#panels();
@@ -231,11 +242,11 @@ export class NeoTabs extends HTMLElement {
 
 			if (isActive) {
 				panel.removeAttribute("hidden");
-				panel.removeAttribute("data-neo-leaving");
+				setLeaving(panel, false);
 				panel.removeAttribute("inert");
 			} else if (isLeaving) {
 				panel.removeAttribute("hidden");
-				panel.setAttribute("data-neo-leaving", "");
+				setLeaving(panel, true);
 				panel.removeAttribute("inert");
 				this.#leavingPanel = panel;
 				this.#leavingHandler = (e: AnimationEvent) => {
@@ -245,7 +256,7 @@ export class NeoTabs extends HTMLElement {
 				panel.addEventListener("animationend", this.#leavingHandler);
 			} else {
 				panel.setAttribute("hidden", "");
-				panel.removeAttribute("data-neo-leaving");
+				setLeaving(panel, false);
 				// The crossfade fallback keeps [hidden] panels at display:block;
 				// `inert` keeps their descendants out of focus / a11y tree.
 				panel.setAttribute("inert", "");
@@ -322,7 +333,7 @@ export class NeoTabs extends HTMLElement {
 			panel.removeEventListener("animationend", this.#leavingHandler);
 		}
 		panel.setAttribute("hidden", "");
-		panel.removeAttribute("data-neo-leaving");
+		setLeaving(panel, false);
 		panel.setAttribute("tabindex", "-1");
 		panel.setAttribute("inert", "");
 		this.#leavingPanel = null;
@@ -442,9 +453,23 @@ export class NeoTab extends HTMLElement {
 }
 
 export class NeoTabPanel extends HTMLElement {
+	#internals = this.attachInternals();
+
 	connectedCallback() {
 		if (!this.hasAttribute("role")) this.setAttribute("role", "tabpanel");
 	}
+
+	// Exit-animation marker, driven by the parent <neo-tabs>. A custom
+	// state, not an attribute: a morph landing mid-animation would strip
+	// the attribute, cancel the animation without an `animationend`, and
+	// strand the outgoing panel visible.
+	setLeaving(on: boolean): void {
+		setState(this.#internals, "leaving", on);
+	}
+}
+
+function setLeaving(panel: HTMLElement, on: boolean): void {
+	if (panel instanceof NeoTabPanel) panel.setLeaving(on);
 }
 
 if (!customElements.get("neo-tabs")) {

@@ -31,28 +31,28 @@ neo-resizable {
 /* Active drag: lock selection / cursor reflow site-wide for the duration
  * of the gesture so quick mouse moves outside the handle don't deselect
  * or hand off the cursor to the underlying content. */
-neo-resizable[resizing] {
+neo-resizable:state(resizing) {
 	user-select: none;
 	-webkit-user-select: none;
 }
 
-neo-resizable[resizing][data-neo-resizable-active-handle="top"],
-neo-resizable[resizing][data-neo-resizable-active-handle="bottom"] {
+neo-resizable:state(resizing):state(handle-top),
+neo-resizable:state(resizing):state(handle-bottom) {
 	cursor: ns-resize;
 }
 
-neo-resizable[resizing][data-neo-resizable-active-handle="left"],
-neo-resizable[resizing][data-neo-resizable-active-handle="right"] {
+neo-resizable:state(resizing):state(handle-left),
+neo-resizable:state(resizing):state(handle-right) {
 	cursor: ew-resize;
 }
 
-neo-resizable[resizing][data-neo-resizable-active-handle="top-left"],
-neo-resizable[resizing][data-neo-resizable-active-handle="bottom-right"] {
+neo-resizable:state(resizing):state(handle-top-left),
+neo-resizable:state(resizing):state(handle-bottom-right) {
 	cursor: nwse-resize;
 }
 
-neo-resizable[resizing][data-neo-resizable-active-handle="top-right"],
-neo-resizable[resizing][data-neo-resizable-active-handle="bottom-left"] {
+neo-resizable:state(resizing):state(handle-top-right),
+neo-resizable:state(resizing):state(handle-bottom-left) {
 	cursor: nesw-resize;
 }
 
@@ -100,7 +100,7 @@ neo-resizable > [data-neo-resizable-handle] > * {
 	cursor: nesw-resize !important;
 }
 
-neo-resizable[resizing] > neo-sidebar {
+neo-resizable:state(resizing) > neo-sidebar {
 	/* biome-ignore lint/complexity/noImportantStyles: kill the sidebar's open/close transition while actively resizing. */
 	transition: none !important;
 }
@@ -123,7 +123,7 @@ neo-resizable > [data-neo-resizable-handle] {
 }
 
 neo-resizable > [data-neo-resizable-handle]:hover,
-neo-resizable[resizing] > [data-neo-resizable-handle] {
+neo-resizable:state(resizing) > [data-neo-resizable-handle] {
 	color: var(--neo-resizable-handle-hover-color);
 	opacity: var(--neo-resizable-handle-hover-opacity);
 	background: var(--neo-resizable-handle-hover-bg);

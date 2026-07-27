@@ -5,6 +5,7 @@
 // shadow.
 
 import { boolAttr } from "../command";
+import { setState } from "../internal-state";
 import {
 	collectMarks,
 	type MarkRailConfig,
@@ -35,7 +36,6 @@ const ATTR_STATIC_MARKS = "static-marks";
 const ATTR_MARKS_ONLY = "marks-only";
 const ATTR_EASING = "easing";
 const ATTR_DISABLED = "disabled";
-const ATTR_RENDERING = "data-neo-slider-rendering";
 
 const MARK_CFG: MarkRailConfig = {
 	markAttr: "data-neo-slider-mark",
@@ -70,7 +70,6 @@ export class NeoSlider extends HTMLElement {
 		ATTR_MARKS_ONLY,
 		ATTR_EASING,
 		ATTR_DISABLED,
-		ATTR_RENDERING,
 		// Observed so a runtime aria-label change refreshes the derived
 		// aria-label on the thumb / value field (see #syncAriaMeta).
 		"aria-label",
@@ -122,6 +121,13 @@ export class NeoSlider extends HTMLElement {
 	// Guards our own reflect writes so attributeChangedCallback doesn't read
 	// them back as an external command.
 	#reflectingValue = false;
+
+	#internals: ElementInternals;
+
+	constructor() {
+		super();
+		this.#internals = this.attachInternals();
+	}
 
 	connectedCallback() {
 		if (!this.shadowRoot) {
@@ -217,12 +223,6 @@ export class NeoSlider extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null) {
-		if (name === ATTR_RENDERING) {
-			if (newValue !== null && this.#rendered && this.#headerEl) {
-				this.#releaseRenderTransitionSuppression();
-			}
-			return;
-		}
 		if (name === ATTR_VALUE) {
 			// Our own guarded reflect write; not an external command.
 			if (this.#reflectingValue) return;
@@ -322,7 +322,7 @@ export class NeoSlider extends HTMLElement {
 		const root = this.shadowRoot;
 		if (!root) return;
 		this.#rendered = true;
-		this.setAttribute(ATTR_RENDERING, "");
+		setState(this.#internals, "rendering", true);
 
 		// A rebuild replaces the old tooltip host; drop the stale controller
 		// (and its window listeners) before the new host is built below.
@@ -504,7 +504,7 @@ export class NeoSlider extends HTMLElement {
 	}
 
 	#releaseRenderTransitionSuppression() {
-		if (!this.hasAttribute(ATTR_RENDERING)) return;
+		if (!this.#internals.states.has("rendering")) return;
 		if (this.#renderTransitionTimer !== null) {
 			window.clearTimeout(this.#renderTransitionTimer);
 		}
@@ -513,13 +513,13 @@ export class NeoSlider extends HTMLElement {
 		// followed by a same-response signal sync delivered separately.
 		this.#renderTransitionTimer = window.setTimeout(() => {
 			this.#renderTransitionTimer = null;
-			this.removeAttribute(ATTR_RENDERING);
+			setState(this.#internals, "rendering", false);
 		}, 50);
 	}
 
 	// Drive the thumb `transition` via `--neo-slider-thumb-transition`.
 	// The shadow `:host [easing]` rules consume it, so unset = instant
-	// jumps. The drag flow toggles `data-neo-slider-dragging` to disable
+	// jumps. The drag flow toggles the `dragging` state to disable
 	// the transition while a pointer is captured.
 	//
 	// Set the var on the shadow track (the common ancestor of fill +
@@ -685,7 +685,7 @@ export class NeoSlider extends HTMLElement {
 	#trackTooltipWhileThumbMoves() {
 		if (!this.#tooltipEl?.hasAttribute("open")) return;
 		if (!this.hasAttribute(ATTR_EASING)) return;
-		if (this.hasAttribute("data-neo-slider-dragging") || this.hasAttribute(ATTR_RENDERING)) {
+		if (this.#internals.states.has("dragging") || this.#internals.states.has("rendering")) {
 			return;
 		}
 		if (this.#tooltipTrackFrame !== null) return;
@@ -1069,7 +1069,7 @@ export class NeoSlider extends HTMLElement {
 				: Math.abs(e.clientX - this.#dragStartX);
 			if (delta < 4) return;
 			this.#dragStarted = true;
-			this.setAttribute("data-neo-slider-dragging", "");
+			setState(this.#internals, "dragging", true);
 			// Snapshot the thumb position and let the tooltip place itself
 			// once; #syncValue then shifts it per frame without a reflow.
 			this.#followBasePct = this.#valuePct(this.value);
@@ -1115,7 +1115,7 @@ export class NeoSlider extends HTMLElement {
 		this.#dragTrackRect = null;
 		// Reflect the value deferred during the drag now the flag is clear.
 		this.#reflectValue(this.value);
-		this.removeAttribute("data-neo-slider-dragging");
+		setState(this.#internals, "dragging", false);
 		// endFollow settles the exact placement after a follow drag; a plain
 		// click (never crossed the threshold) just repositions.
 		if (wasDragging) {

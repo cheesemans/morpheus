@@ -1,3 +1,4 @@
+import { setState } from "../internal-state";
 import { num } from "../num";
 
 type Handle = "top" | "bottom" | "left" | "right" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -45,6 +46,13 @@ interface ActiveDrag {
 }
 
 export class NeoResizable extends HTMLElement {
+	#internals: ElementInternals;
+
+	constructor() {
+		super();
+		this.#internals = this.attachInternals();
+	}
+
 	static readonly observedAttributes = [
 		"handles",
 		"min-width",
@@ -272,8 +280,7 @@ export class NeoResizable extends HTMLElement {
 			this.style.height = `${r.height}px`;
 			this.#setSizeVar("height", `${r.height}px`);
 		}
-		this.setAttribute("resizing", "");
-		this.setAttribute("data-neo-resizable-active-handle", dir);
+		this.#setDragState(dir);
 		document.documentElement.setAttribute("data-neo-resizable-cursor", CURSOR_BY_HANDLE[dir]);
 		(e.currentTarget as Element).setPointerCapture?.(e.pointerId);
 		document.addEventListener("pointermove", this.#onPointerMove);
@@ -336,11 +343,18 @@ export class NeoResizable extends HTMLElement {
 		this.#endDrag();
 	};
 
+	// `resizing` plus the active handle's own state, so the cursor rules
+	// can pick the axis. Custom states, not attributes: a morph mid-drag
+	// would strip attributes and drop the selection lock and cursor.
+	#setDragState(dir: Handle | null): void {
+		setState(this.#internals, "resizing", dir !== null);
+		for (const h of ALL_HANDLES) setState(this.#internals, `handle-${h}`, h === dir);
+	}
+
 	#endDrag() {
 		if (!this.#active) return;
 		this.#active = null;
-		this.removeAttribute("resizing");
-		this.removeAttribute("data-neo-resizable-active-handle");
+		this.#setDragState(null);
 		document.documentElement.removeAttribute("data-neo-resizable-cursor");
 		document.removeEventListener("pointermove", this.#onPointerMove);
 		document.removeEventListener("pointerup", this.#onPointerUp);

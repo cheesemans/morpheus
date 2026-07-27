@@ -9,6 +9,7 @@ import "../neo-icon";
 import "../neo-spinner";
 import "../neo-toast";
 import { boolAttr } from "../command";
+import { setState } from "../internal-state";
 import { resolveTouchDismiss } from "../touch-dismiss";
 
 type ToastVariant = "default" | "success" | "error" | "warning" | "info" | "loading";
@@ -42,7 +43,7 @@ TOASTER_SHADOW_TEMPLATE.innerHTML = `
     );
     margin-inline: var(--neo-toast-shadow-bleed);
   }
-  :host([data-neo-expanded]) [data-neo-toaster-stack] {
+  :host(:state(expanded)) [data-neo-toaster-stack] {
     height: calc(
       var(--neo-toaster-stack-height, 0px) +
         var(--neo-toast-shadow-bleed) +
@@ -115,8 +116,11 @@ export class NeoToaster extends HTMLElement {
 	static instance: NeoToaster | null = null;
 	static observedAttributes = ["stack"];
 
+	#internals: ElementInternals;
+
 	constructor() {
 		super();
+		this.#internals = this.attachInternals();
 		// The stack lives in shadow, so morphs can't reach it. Toasts are
 		// direct light-DOM children projected through the default slot.
 		const root = this.attachShadow({ mode: "open" });
@@ -680,7 +684,7 @@ export class NeoToaster extends HTMLElement {
 		);
 		if (live.length === 0) {
 			this.#clickExpanded = false;
-			this.removeAttribute("data-neo-expanded");
+			setState(this.#internals, "expanded", false);
 			this.#stack.style.removeProperty("--neo-toaster-stack-height");
 			return;
 		}
@@ -795,7 +799,7 @@ export class NeoToaster extends HTMLElement {
 	#startTimer(entry: ToastEntry): void {
 		if (entry.duration <= 0) return; // persistent
 		if (entry.el.hasAttribute("data-neo-toast-leaving")) return;
-		if (this.hasAttribute("data-neo-expanded")) return; // paused while expanded
+		if (this.#internals.states.has("expanded")) return; // paused while expanded
 
 		const now = Date.now();
 		if (entry.deadline === 0) {
@@ -863,8 +867,8 @@ export class NeoToaster extends HTMLElement {
 	}
 
 	#expandStack(): void {
-		if (this.hasAttribute("data-neo-expanded")) return;
-		this.setAttribute("data-neo-expanded", "");
+		if (this.#internals.states.has("expanded")) return;
+		setState(this.#internals, "expanded", true);
 		for (const t of this.#toasts) this.#pauseTimer(t);
 		// Pin scroll to the anchor edge so the freshest toast stays
 		// visible when the stack unfolds. Bottom-anchored stacks
@@ -878,8 +882,8 @@ export class NeoToaster extends HTMLElement {
 	}
 
 	#collapseStack(): void {
-		if (!this.hasAttribute("data-neo-expanded")) return;
-		this.removeAttribute("data-neo-expanded");
+		if (!this.#internals.states.has("expanded")) return;
+		setState(this.#internals, "expanded", false);
 		for (const t of this.#toasts) this.#startTimer(t);
 	}
 

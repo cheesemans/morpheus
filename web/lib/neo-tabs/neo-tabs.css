@@ -60,15 +60,15 @@ neo-tabs[easing]:not([enter-animation]):not([exit-animation]) > neo-tabpanel[hid
 	pointer-events: none;
 }
 
-/* During an exit animation the panel keeps `[data-neo-leaving]` (no
+/* During an exit animation the panel keeps `:state(leaving)` (no
  * `[hidden]`), so it stays display:block and the head <style>
  * applies the exit @keyframes via animation. */
 
 /* Built-in @keyframes; author can reference these by name from
  * `enter-animation` / `exit-animation`. Author-defined keyframes
  * in their own stylesheet work the same way. The `forward` /
- * `backward` variants pair with the host's `data-neo-direction`
- * attribute that the JS sets when the active tab changes. */
+ * `backward` variants pair with the host's `:state(forward)` /
+ * `:state(backward)` that the JS sets when the active tab changes. */
 @keyframes neo-tab-fade-in {
 	from {
 		opacity: 0;
@@ -127,19 +127,17 @@ neo-tabs[easing]:not([enter-animation]):not([exit-animation]) > neo-tabpanel[hid
 }
 
 /* Maps `enter-animation`/`exit-animation="neo-tab-slide"` to the
- * directional keyframe based on `data-neo-direction`. */
-neo-tabs[easing][enter-animation="neo-tab-slide"][data-neo-direction="backward"]
-> neo-tabpanel:not([hidden]):not([data-neo-leaving]) {
+ * directional keyframe based on the host's direction state. */
+neo-tabs[easing][enter-animation="neo-tab-slide"]:state(backward) > neo-tabpanel:not([hidden]):not(:state(leaving)) {
 	animation-name: neo-tab-slide-in-backward;
 }
-neo-tabs[easing][exit-animation="neo-tab-slide"][data-neo-direction="backward"] > neo-tabpanel[data-neo-leaving] {
+neo-tabs[easing][exit-animation="neo-tab-slide"]:state(backward) > neo-tabpanel:state(leaving) {
 	animation-name: neo-tab-slide-out-backward;
 }
-neo-tabs[easing][enter-animation="neo-tab-slide"][data-neo-direction="forward"]
-	> neo-tabpanel:not([hidden]):not([data-neo-leaving]) {
+neo-tabs[easing][enter-animation="neo-tab-slide"]:state(forward) > neo-tabpanel:not([hidden]):not(:state(leaving)) {
 	animation-name: neo-tab-slide-in-forward;
 }
-neo-tabs[easing][exit-animation="neo-tab-slide"][data-neo-direction="forward"] > neo-tabpanel[data-neo-leaving] {
+neo-tabs[easing][exit-animation="neo-tab-slide"]:state(forward) > neo-tabpanel:state(leaving) {
 	animation-name: neo-tab-slide-out-forward;
 }
 

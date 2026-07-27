@@ -353,7 +353,7 @@ func PageTabs(morpheusVersion string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</code>. The <code>tabs-tilt</code> set here branches on the host's <code>data-neo-direction</code> attribute (set when the active tab changes), so the panel rotates and slides in from the side of travel.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</code>. The <code>tabs-tilt</code> set here branches on the host's <code>:state(forward)</code> / <code>:state(backward)</code> custom state (set when the active tab changes), so the panel rotates and slides in from the side of travel.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -653,7 +653,7 @@ func PageTabs(morpheusVersion string) templ.Component {
 			var templ_7745c5c3_Var30 string
 			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(`orientation="vertical"`)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_tabs.templ`, Line: 149, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/page_tabs.templ`, Line: 150, Col: 40}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 			if templ_7745c5c3_Err != nil {
@@ -717,6 +717,14 @@ var tabsDoc = ComponentDoc{
 			Description: templ.Raw("<code>@keyframes</code> name for the entering panel.")},
 		{Name: "exit-animation", Type: "string", Observed: true,
 			Description: templ.Raw("<code>@keyframes</code> name for the exiting panel.")},
+	},
+	States: []DocState{
+		{Name: "forward",
+			Description: templ.Raw("Set on <code>&lt;neo-tabs&gt;</code> when the new tab sits after the previous one; the built-in and author animations branch on it.")},
+		{Name: "backward",
+			Description: templ.Raw("Set on <code>&lt;neo-tabs&gt;</code> when the new tab sits before the previous one.")},
+		{Name: "leaving",
+			Description: templ.Raw("Set on the outgoing <code>&lt;neo-tabpanel&gt;</code> for the duration of its exit animation.")},
 	},
 	Slots: []DocSlot{
 		{Name: "default",

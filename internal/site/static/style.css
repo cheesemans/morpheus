@@ -146,11 +146,11 @@ code {
 }
 
 /* Full-height page sidebar; 100dvh (not 100vh) for mobile browser UI.
- * Not for [overlay]/[data-neo-sidebar-overlay] (drawer wants
- * position:fixed); class+tag specificity would beat morpheus.css. */
+ * Not in overlay mode (the drawer wants position:fixed);
+ * class+tag specificity would beat morpheus.css. */
 @media not (max-width: 50rem) {
 	.app-shell
-		> neo-sidebar:not([overlay]):not([data-neo-sidebar-overlay]) {
+		> neo-sidebar:not(:state(overlay)) {
 		position: sticky;
 		top: 0;
 		height: 100dvh;
@@ -744,7 +744,7 @@ neo-tooltip.sim-settings-warning {
  * descendant tooltips don't paint behind it. Overlay mode already
  * gets z-index:60 from the kit. */
 @media not (max-width: 70rem) {
-	.app-settings-sidebar:not([overlay]):not([data-neo-sidebar-overlay]) {
+	.app-settings-sidebar:not(:state(overlay)) {
 		z-index: 20;
 	}
 }
@@ -2237,7 +2237,7 @@ neo-popover:has(> [data-neo-popover-content] > .popover-menu) {
  * sidebar shrinks to its own content, and the flex sibling stretches
  * past it (visible gap below the sidebar's right border). `align-self:
  * stretch` with `height: auto` lets the flex line stretch take over. */
-.sidebar-preview > neo-sidebar:not([overlay]):not([data-neo-sidebar-overlay]) {
+.sidebar-preview > neo-sidebar:not(:state(overlay)) {
 	height: auto;
 	align-self: stretch;
 }
@@ -2262,7 +2262,7 @@ neo-popover:has(> [data-neo-popover-content] > .popover-menu) {
 .sidebar-preview
 	> neo-resizable:has(> neo-sidebar:defined:not([open])),
 .sidebar-preview
-	> neo-resizable:has(> neo-sidebar[data-neo-sidebar-overlay]) {
+	> neo-resizable:has(> neo-sidebar:state(overlay)) {
 	width: 0 !important;
 	min-width: 0 !important;
 	max-width: 0 !important;
@@ -2273,7 +2273,7 @@ neo-popover:has(> [data-neo-popover-content] > .popover-menu) {
 	> neo-resizable:has(> neo-sidebar:defined:not([open]))
 	> [data-neo-resizable-handle],
 .sidebar-preview
-	> neo-resizable:has(> neo-sidebar[data-neo-sidebar-overlay])
+	> neo-resizable:has(> neo-sidebar:state(overlay))
 	> [data-neo-resizable-handle] {
 	display: none;
 }
@@ -2305,7 +2305,7 @@ neo-popover:has(> [data-neo-popover-content] > .popover-menu) {
 }
 
 /* Author @keyframes (not in the kit): 3D tilt around the panel's
- * leading edge, data-neo-direction flips which. perspective +
+ * leading edge, the host direction state flips which. perspective +
  * transform-style:preserve-3d on the host so overflow:hidden
  * ancestors don't flatten the rotation. */
 
@@ -2321,17 +2321,17 @@ neo-tabs[easing][exit-animation="tabs-tilt"] > neo-tabpanel {
 	backface-visibility: hidden;
 }
 
-neo-tabs[easing][enter-animation="tabs-tilt"][data-neo-direction="forward"]
-	> neo-tabpanel:not([hidden]):not([data-neo-leaving]),
-neo-tabs[easing][exit-animation="tabs-tilt"][data-neo-direction="backward"]
-	> neo-tabpanel[data-neo-leaving] {
+neo-tabs[easing][enter-animation="tabs-tilt"]:state(forward)
+	> neo-tabpanel:not([hidden]):not(:state(leaving)),
+neo-tabs[easing][exit-animation="tabs-tilt"]:state(backward)
+	> neo-tabpanel:state(leaving) {
 	transform-origin: left center;
 }
 
-neo-tabs[easing][enter-animation="tabs-tilt"][data-neo-direction="backward"]
-	> neo-tabpanel:not([hidden]):not([data-neo-leaving]),
-neo-tabs[easing][exit-animation="tabs-tilt"][data-neo-direction="forward"]
-	> neo-tabpanel[data-neo-leaving] {
+neo-tabs[easing][enter-animation="tabs-tilt"]:state(backward)
+	> neo-tabpanel:not([hidden]):not(:state(leaving)),
+neo-tabs[easing][exit-animation="tabs-tilt"]:state(forward)
+	> neo-tabpanel:state(leaving) {
 	transform-origin: right center;
 }
 
@@ -2355,20 +2355,20 @@ neo-tabs[easing][exit-animation="tabs-tilt"][data-neo-direction="forward"]
 	to   { opacity: 0; transform: rotateY(60deg); }
 }
 
-neo-tabs[easing][enter-animation="tabs-tilt"][data-neo-direction="forward"]
-	> neo-tabpanel:not([hidden]):not([data-neo-leaving]) {
+neo-tabs[easing][enter-animation="tabs-tilt"]:state(forward)
+	> neo-tabpanel:not([hidden]):not(:state(leaving)) {
 	animation-name: tabs-tilt-in-forward;
 }
-neo-tabs[easing][enter-animation="tabs-tilt"][data-neo-direction="backward"]
-	> neo-tabpanel:not([hidden]):not([data-neo-leaving]) {
+neo-tabs[easing][enter-animation="tabs-tilt"]:state(backward)
+	> neo-tabpanel:not([hidden]):not(:state(leaving)) {
 	animation-name: tabs-tilt-in-backward;
 }
-neo-tabs[easing][exit-animation="tabs-tilt"][data-neo-direction="forward"]
-	> neo-tabpanel[data-neo-leaving] {
+neo-tabs[easing][exit-animation="tabs-tilt"]:state(forward)
+	> neo-tabpanel:state(leaving) {
 	animation-name: tabs-tilt-out-forward;
 }
-neo-tabs[easing][exit-animation="tabs-tilt"][data-neo-direction="backward"]
-	> neo-tabpanel[data-neo-leaving] {
+neo-tabs[easing][exit-animation="tabs-tilt"]:state(backward)
+	> neo-tabpanel:state(leaving) {
 	animation-name: tabs-tilt-out-backward;
 }
 

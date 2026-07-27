@@ -30,6 +30,15 @@ type DocEvent struct {
 	Description templ.Component
 }
 
+// DocState documents a CSS custom state the component sets on itself as
+// its internal state changes. Name is the bare state name; it renders as
+// :state(<Name>). States are not attributes: nothing outside the component
+// sets them, and a morph cannot strip them.
+type DocState struct {
+	Name        string
+	Description templ.Component
+}
+
 // DocPart documents a shadow ::part() exposed for page CSS. Name is the
 // bare part name; it renders as ::part(<Name>).
 type DocPart struct {
@@ -62,6 +71,7 @@ type ComponentDoc struct {
 	// "events"; a non-empty Prefix yields "<prefix>-attributes" etc.
 	Prefix     string
 	Attributes []DocAttribute
+	States     []DocState
 	Slots      []DocSlot
 	Events     []DocEvent
 	Parts      []DocPart

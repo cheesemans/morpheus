@@ -245,6 +245,10 @@ var drawerDoc = ComponentDoc{
 				"<code>[data-neo-drawer-touch-ignore]</code> descendant) " +
 				"are ignored. Disabled when <code>dismissible=\"false\"</code>.")},
 	},
+	States: []DocState{
+		{Name: "dragging",
+			Description: templ.Raw("Set while a touch-dismiss drag is in flight.")},
+	},
 	Slots: []DocSlot{
 		{Name: "default",
 			Description: templ.Raw("A <code>&lt;dialog&gt;</code> with optional <code>[data-neo-drawer-header]</code>, <code>[data-neo-drawer-body]</code>, <code>[data-neo-drawer-footer]</code> children.")},

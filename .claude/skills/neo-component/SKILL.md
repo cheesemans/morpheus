@@ -13,9 +13,17 @@ These files implement the custom elements, so the component design rules in [DES
 - Read a boolean with the shared command reader: `boolCommand` for the raw `true`/`false`/`null`, or `boolAttr(host, name, default)` for a config knob. Never use bare `hasAttribute`; it can't tell `x="false"` from an absent attribute.
 - Interactive-state attributes (`open`, `checked`, ...): keep an internal intent field and reflect it back to the attribute through a guarded writer (a `#reflecting` flag) so the reflected write isn't read back as a command. `neo-popover`'s `open` is the reference implementation.
 
+## Internal state
+
+Runtime-derived state the component exposes to CSS goes into its `ElementInternals` custom state set, never into an attribute: `setState(this.#internals, "overlay", on)` from `internal-state.ts`, selected as `neo-sidebar:state(overlay)` (or `:host(:state(overlay))` inside the element's own shadow CSS). Attach internals once in the constructor (`#internals = this.attachInternals()`) and reuse that object; a second `attachInternals()` call throws.
+
+Read the state back through `this.#internals.states.has(name)`, or from a field/getter when the value is derived from something the component already tracks; never re-read it from the DOM.
+
+A state a component sets on a child kit element (a panel it animates out, an item it drags) lives in that child's internals, toggled through a small method on the child class. A plain `<div>` or generated node has no internals: a marker on one stays an attribute, which is safe because a morph removes the node itself and the component rebuilds it.
+
 ## Surviving morph attribute stripping
 
-A morph strips any attribute the component set at runtime that the server template doesn't carry (role, tabindex, ARIA). A self-targeted `MutationObserver` detects the strip and re-applies through `setAttrIfChanged` / `removeAttrIfPresent`, which are idempotent so a no-op pass produces no records and the observer settles instead of looping. See `observeManagedAttrs`.
+A morph strips any attribute the component set at runtime that the server template doesn't carry (role, tabindex, ARIA). A self-targeted `MutationObserver` detects the strip and re-applies through `setAttrIfChanged` / `removeAttrIfPresent`, which are idempotent so a no-op pass produces no records and the observer settles instead of looping. See `observeManagedAttrs`. This is for attributes the platform or assistive tech reads; anything only CSS reads is internal state instead.
 
 ## Getters, methods, private state
 

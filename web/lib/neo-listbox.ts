@@ -1,4 +1,5 @@
 import { boolAttr, openCommand } from "./command";
+import { setState } from "./internal-state";
 import { cloneDatalistOptionsInto, externalDatalistFor } from "./neo-datalist";
 import {
 	anchorPopoverResult,
@@ -450,16 +451,11 @@ export abstract class NeoListbox extends HTMLElement {
 	}
 
 	// Mirror the trigger's live :focus-visible onto the host, which paints
-	// the ring (the trigger's own outline is suppressed). A fat morph
-	// reconciles the host's attributes against SSR and strips this
-	// kit-managed attribute while the trigger keeps focus, so the morph
-	// path re-asserts it through this same sync.
+	// the ring (the trigger's own outline is suppressed). A custom state,
+	// so a fat morph reconciling the host's attributes against SSR can't
+	// strip the ring off a trigger that still holds focus.
 	protected syncFocusVisible() {
-		if (this.trigger?.matches(":focus-visible")) {
-			this.setAttribute("data-neo-focus-visible", "");
-		} else {
-			this.removeAttribute("data-neo-focus-visible");
-		}
+		setState(this.internals, "focus-visible", this.trigger?.matches(":focus-visible") === true);
 	}
 
 	protected onTriggerFocus = () => this.syncFocusVisible();

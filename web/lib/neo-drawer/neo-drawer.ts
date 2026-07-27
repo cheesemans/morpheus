@@ -3,6 +3,7 @@
 // slid in with a transform. Light DOM throughout.
 
 import { boolAttr, openCommand } from "../command";
+import { setState } from "../internal-state";
 import { DialogBackdropClickTracker, lockBodyScroll, unlockBodyScroll } from "../native-dialog";
 import { resolveTouchDismiss } from "../touch-dismiss";
 
@@ -10,6 +11,13 @@ let nextId = 0;
 
 export class NeoDrawer extends HTMLElement {
 	static readonly observedAttributes = ["open", "side"];
+
+	#internals: ElementInternals;
+
+	constructor() {
+		super();
+		this.#internals = this.attachInternals();
+	}
 
 	#trigger: HTMLElement | null = null;
 	#dialog: HTMLDialogElement | null = null;
@@ -553,7 +561,7 @@ export class NeoDrawer extends HTMLElement {
 				return;
 			}
 			d.decided = true;
-			this.setAttribute("data-neo-drawer-dragging", "");
+			setState(this.#internals, "dragging", true);
 			// Disable transition so the panel tracks the finger 1:1
 			// instead of chasing the easing curve.
 			if (this.#dialog) this.#dialog.style.transition = "none";
@@ -598,7 +606,7 @@ export class NeoDrawer extends HTMLElement {
 	// then animates from the current rendered transform to either
 	// translate(0,0) (snap-back) or the closed transform (after hide).
 	#clearDragStyles() {
-		this.removeAttribute("data-neo-drawer-dragging");
+		setState(this.#internals, "dragging", false);
 		if (this.#dialog) {
 			this.#dialog.style.transform = "";
 			this.#dialog.style.transition = "";

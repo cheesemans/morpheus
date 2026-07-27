@@ -4,6 +4,7 @@
 // runs instead of rebuilding and snapping.
 
 import { boolAttr } from "../command";
+import { setState } from "../internal-state";
 import {
 	collectMarks,
 	type MarkRailConfig,
@@ -128,6 +129,13 @@ export class NeoSliderRange extends HTMLElement {
 	#tooltipTrackStartedAt = 0;
 	#markResizeObserver: ResizeObserver | null = null;
 	#markLayoutFrame: number | null = null;
+
+	#internals: ElementInternals;
+
+	constructor() {
+		super();
+		this.#internals = this.attachInternals();
+	}
 
 	connectedCallback() {
 		if (!this.shadowRoot) {
@@ -896,7 +904,7 @@ export class NeoSliderRange extends HTMLElement {
 
 	#trackTooltipWhileThumbsMove() {
 		if (!this.hasAttribute(ATTR_EASING)) return;
-		if (this.hasAttribute("data-neo-slider-dragging")) return;
+		if (this.#internals.states.has("dragging")) return;
 		const hasOpenTooltip = this.#tooltipMinEl?.hasAttribute("open") || this.#tooltipMaxEl?.hasAttribute("open");
 		if (!hasOpenTooltip) return;
 		if (this.#tooltipTrackFrame !== null) return;
@@ -1269,7 +1277,7 @@ export class NeoSliderRange extends HTMLElement {
 				: Math.abs(e.clientX - this.#dragStartX);
 			if (delta < 4) return;
 			this.#dragStarted = true;
-			this.setAttribute("data-neo-slider-dragging", "");
+			setState(this.#internals, "dragging", true);
 			// Place the dragged tooltip once; #syncValues then follows it.
 			this.#beginFollowSide(this.#dragWhich);
 		}
@@ -1322,7 +1330,7 @@ export class NeoSliderRange extends HTMLElement {
 		this.#followSide = null;
 		// Reflect the value deferred during the drag now the flag is clear.
 		this.#reflectValues();
-		this.removeAttribute("data-neo-slider-dragging");
+		setState(this.#internals, "dragging", false);
 		// endFollow settles the dragged tooltip's exact placement; reposition
 		// the other so both are correct after the drag.
 		if (wasFollowing) this.#ctrlFor(wasFollowing)?.endFollow();

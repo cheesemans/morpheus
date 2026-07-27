@@ -16,7 +16,7 @@
 	border-bottom: none;
 }
 
-.sb-fail-shell > neo-sidebar:not([overlay]):not([data-neo-sidebar-overlay]) {
+.sb-fail-shell > neo-sidebar:not(:state(overlay)) {
 	height: auto;
 	align-self: stretch;
 }

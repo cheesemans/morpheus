@@ -31,8 +31,8 @@ const COMBOBOX_SHADOW_TEMPLATE = document.createElement("template");
 //   more]) and via the forced-colors media query. Ring lives on the host, not
 //   the trigger: a trigger ring would be clipped by a host overflow: hidden
 //   (e.g. inside neo-input-group). JS mirrors the trigger's :focus-visible onto
-//   the host via the attribute.
-// - :host([data-neo-focus-visible]): match the trigger's radius so the host
+//   the host as a custom state.
+// - :host(:state(focus-visible)): match the trigger's radius so the host
 //   ring rounds like neo-button's; --neo-button-radius is 0 inside
 //   neo-input-group, keeping it square there.
 // - [data-neo-combobox-trigger]:disabled: the trigger's native disabled flag
@@ -109,7 +109,7 @@ COMBOBOX_SHADOW_TEMPLATE.innerHTML = `
   [data-neo-combobox-trigger]:focus-visible {
     outline: none;
   }
-  :host([data-neo-focus-visible]) {
+  :host(:state(focus-visible)) {
     outline: 2px solid var(--neo-button-focus-ring, currentColor);
     outline-offset: 2px;
     border-radius: var(--neo-button-radius, var(--page-radius, 0.5rem));

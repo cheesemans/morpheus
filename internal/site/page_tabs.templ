@@ -77,8 +77,9 @@ templ PageTabs(morpheusVersion string) {
 				<code>exit-animation</code> at author-defined
 				<code>{ "@keyframes" }</code>. The
 				<code>tabs-tilt</code> set here branches on the
-				host's <code>data-neo-direction</code> attribute
-				(set when the active tab changes), so the panel
+				host's <code>:state(forward)</code> /
+				<code>:state(backward)</code> custom state (set
+				when the active tab changes), so the panel
 				rotates and slides in from the side of travel.
 			</p>
 			@demoFrameWith(DemoFrameOpts{
@@ -177,6 +178,14 @@ var tabsDoc = ComponentDoc{
 			Description: templ.Raw("<code>@keyframes</code> name for the entering panel.")},
 		{Name: "exit-animation", Type: "string", Observed: true,
 			Description: templ.Raw("<code>@keyframes</code> name for the exiting panel.")},
+	},
+	States: []DocState{
+		{Name: "forward",
+			Description: templ.Raw("Set on <code>&lt;neo-tabs&gt;</code> when the new tab sits after the previous one; the built-in and author animations branch on it.")},
+		{Name: "backward",
+			Description: templ.Raw("Set on <code>&lt;neo-tabs&gt;</code> when the new tab sits before the previous one.")},
+		{Name: "leaving",
+			Description: templ.Raw("Set on the outgoing <code>&lt;neo-tabpanel&gt;</code> for the duration of its exit animation.")},
 	},
 	Slots: []DocSlot{
 		{Name: "default",

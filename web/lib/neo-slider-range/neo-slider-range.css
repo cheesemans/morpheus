@@ -212,8 +212,8 @@ neo-slider-range[easing][vertical] > [data-neo-slider-track] > [data-neo-slider-
 		bottom var(--neo-slider-thumb-transition, 200ms ease);
 }
 
-neo-slider-range[easing][data-neo-slider-dragging] [data-neo-slider-thumb],
-neo-slider-range[easing][data-neo-slider-dragging] > [data-neo-slider-track] > [data-neo-slider-fill] {
+neo-slider-range[easing]:state(dragging) [data-neo-slider-thumb],
+neo-slider-range[easing]:state(dragging) > [data-neo-slider-track] > [data-neo-slider-fill] {
 	transition: none;
 }
 

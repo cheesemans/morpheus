@@ -331,6 +331,12 @@ var sortableDoc = ComponentDoc{
 		{Name: "tolerate-reorder", Type: "boolean", Default: "false",
 			Description: templ.Raw("Controls how an in-flight drag survives an external morph (e.g. a Datastar fat-morph). By default a drag is kept alive only by a no-op morph: same item ids, same per-id content, same order of the other rows. <code>tolerate-reorder</code> loosens that to the same id set: an order-only morph is treated as a no-op and the gesture continues. Any added, removed, or swapped id still cancels the drag.")},
 	},
+	States: []DocState{
+		{Name: "active",
+			Description: templ.Raw("Set while a reorder is in flight, whether pointer- or keyboard-driven.")},
+		{Name: "pointer",
+			Description: templ.Raw("Set while the in-flight reorder is pointer-driven; carries the grabbing cursor, which a keyboard reorder must not.")},
+	},
 	Slots: []DocSlot{
 		{Name: "default",
 			Description: templ.Raw("The sortable items: the host's direct element children. Give each a stable <code>id</code> (or <code>data-neo-sortable-id</code>) so the reorder events can name the moved item. Mark a child <code>data-neo-sortable-ignore</code> to exclude it from the set.")},

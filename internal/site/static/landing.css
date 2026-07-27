@@ -778,7 +778,7 @@ neo-option[role="option"][aria-selected="true"] .ship-icon {
 }
 
 /* Anchor the overlay drawer to the demo body, not the viewport. */
-neo-sidebar.landing-a11y-demo-nav[data-neo-sidebar-overlay] {
+neo-sidebar.landing-a11y-demo-nav:state(overlay) {
 	position: absolute;
 }
 

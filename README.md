@@ -1,4 +1,5 @@
 ![Static Badge](https://img.shields.io/badge/version-pre--alpha%20v0.1.0-yellow?style=for-the-badge)
+[![Requires Baseline 2024](https://img.shields.io/badge/requires-Baseline%202024-4285f4?style=for-the-badge)](#browser-support)
 
 # Morpheus
 
@@ -16,6 +17,25 @@ Morpheus is a proof of concept of a web component UI kit that is easy to patch f
 - [Laravel Livewire](https://livewire.laravel.com/docs/morphing).
 
 For the architecture and the reasoning behind these choices, see [DESIGN.md](DESIGN.md).
+
+## Browser support
+
+Morpheus targets [Baseline](https://web.dev/baseline) Newly available as of August 2024. Minimum versions:
+
+| Browser        | Minimum |
+| -------------- | ------- |
+| Chrome / Edge  | 125     |
+| Safari         | 17.5    |
+| Firefox        | 129     |
+
+There is no polyfill layer and no legacy fallback path. The kit uses the platform directly, and these features set the floor:
+
+- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) and [`transition-behavior: allow-discrete`](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior): enter and exit animations for surfaces that toggle `display`.
+- [`:state()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:state) and [`CustomStateSet`](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet): a component's internal state, kept out of the light DOM so a morph cannot strip it (see [Internal state](DESIGN.md#internal-state)).
+- [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) and [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog): top-layer rendering, modal lifecycle, and light dismiss.
+- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has), [container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries), and [`round()`](https://developer.mozilla.org/en-US/docs/Web/CSS/round): layout and sizing that reacts to content and to the parent box rather than the viewport.
+
+Two features degrade instead of setting the floor: [`scrollend`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollend_event) falls back to a settle timer where it is missing, and [`:host-context()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:host-context) (Chromium and WebKit only) carries an increased-contrast refinement that Firefox skips.
 
 ## Developing
 

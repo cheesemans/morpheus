@@ -750,6 +750,10 @@ var sliderRangeDoc = ComponentDoc{
 		{Name: "easing", Type: "string", Observed: true,
 			Description: templ.Raw("CSS transition shorthand for the thumbs.")},
 	},
+	States: []DocState{
+		{Name: "dragging",
+			Description: templ.Raw("Set while a pointer drag is in flight; suppresses the <code>easing</code> transition so the thumb tracks the cursor.")},
+	},
 	Slots: []DocSlot{
 		{Name: "[data-neo-slider-mark]",
 			Description: templ.Raw("Anchor mark at a numeric value, optionally with a label child.")},

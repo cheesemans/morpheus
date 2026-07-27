@@ -1,4 +1,5 @@
 import { boolAttr, openCommand } from "../command";
+import { setState } from "../internal-state";
 import { observeManagedAttrs, setAttrIfChanged } from "../neo-morph-resilient";
 import { deepActiveElement, eventEnters } from "../shadow-utils";
 import { resolveTouchDismiss } from "../touch-dismiss";
@@ -10,7 +11,14 @@ const FOCUSABLE =
 	'[tabindex]:not([tabindex="-1"]):not([tabindex=""])';
 
 export class NeoSidebar extends HTMLElement {
-	static readonly observedAttributes = ["open", "overlay-breakpoint"];
+	static readonly observedAttributes = ["open", "overlay", "overlay-breakpoint"];
+
+	#internals: ElementInternals;
+
+	constructor() {
+		super();
+		this.#internals = this.attachInternals();
+	}
 
 	#backdropEl: HTMLDivElement | null = null;
 	// Stable ref so re-adopting a morph-preserved backdrop doesn't stack
@@ -87,12 +95,7 @@ export class NeoSidebar extends HTMLElement {
 	}
 
 	#syncOverlayMode() {
-		const inOverlay = boolAttr(this, "overlay", false) || this.#wideMode === false;
-		if (inOverlay) {
-			this.setAttribute("data-neo-sidebar-overlay", "");
-		} else {
-			this.removeAttribute("data-neo-sidebar-overlay");
-		}
+		setState(this.#internals, "overlay", this.#isOverlayMode);
 	}
 
 	connectedCallback() {
@@ -140,7 +143,7 @@ export class NeoSidebar extends HTMLElement {
 			// don't need this; `none` -> `translateX(0)` is a visual no-op.
 			const wasOpen = this.hasAttribute("open");
 			if (!wasOpen) {
-				this.setAttribute("data-neo-mode-snap", "");
+				setState(this.#internals, "mode-snap", true);
 			}
 
 			// Auto-mode is asymmetric: going narrow ALWAYS closes (an
@@ -165,7 +168,7 @@ export class NeoSidebar extends HTMLElement {
 			if (!wasOpen) {
 				requestAnimationFrame(() => {
 					requestAnimationFrame(() => {
-						this.removeAttribute("data-neo-mode-snap");
+						setState(this.#internals, "mode-snap", false);
 					});
 				});
 			}
@@ -189,7 +192,7 @@ export class NeoSidebar extends HTMLElement {
 		this.#readyRaf = requestAnimationFrame(() => {
 			this.#readyRaf = requestAnimationFrame(() => {
 				this.#readyRaf = 0;
-				this.setAttribute("data-neo-sidebar-ready", "");
+				setState(this.#internals, "ready", true);
 			});
 		});
 	}
@@ -207,7 +210,8 @@ export class NeoSidebar extends HTMLElement {
 			cancelAnimationFrame(this.#readyRaf);
 			this.#readyRaf = 0;
 		}
-		this.removeAttribute("data-neo-sidebar-ready");
+		setState(this.#internals, "ready", false);
+		setState(this.#internals, "overlay", false);
 		if (this.#asyncRestoreTimer) {
 			window.clearTimeout(this.#asyncRestoreTimer);
 			this.#asyncRestoreTimer = 0;
@@ -223,6 +227,17 @@ export class NeoSidebar extends HTMLElement {
 	}
 
 	attributeChangedCallback(name: string, _oldValue: string | null, _newValue: string | null) {
+		if (name === "overlay") {
+			// `overlay` pins the mode regardless of width, so a runtime
+			// flip has to re-derive both the state CSS keys on and the
+			// backdrop. Auto-mode stays as connect computed it: the
+			// responsive default follows the authored markup, not a later
+			// configuration change.
+			if (this.#wideMode === null) return;
+			this.#syncBackdrop();
+			this.#syncOverlayMode();
+			return;
+		}
 		if (name === "overlay-breakpoint") {
 			// Only act when the new breakpoint actually crosses the
 			// parent's current width.
@@ -379,12 +394,13 @@ export class NeoSidebar extends HTMLElement {
 	}
 
 	// True while the panel is rendering as a fixed overlay, either
-	// because the author pinned `[overlay]` or because the JS detected
-	// a narrow parent. Touch-dismiss is gated on this: in wide in-flow
-	// mode the host is a column whose width animates, not a sliding
-	// panel, so a horizontal swipe has nothing to interpolate against.
+	// because the author pinned `[overlay]` or because the parent sits
+	// at/below this instance's breakpoint. Touch-dismiss is gated on
+	// this: in wide in-flow mode the host is a column whose width
+	// animates, not a sliding panel, so a horizontal swipe has nothing
+	// to interpolate against.
 	get #isOverlayMode(): boolean {
-		return boolAttr(this, "overlay", false) || this.hasAttribute("data-neo-sidebar-overlay");
+		return boolAttr(this, "overlay", false) || this.#wideMode === false;
 	}
 
 	// Returns the threshold in px, or null if touch-dismiss is
@@ -473,7 +489,7 @@ export class NeoSidebar extends HTMLElement {
 				return;
 			}
 			d.decided = true;
-			this.setAttribute("data-neo-sidebar-dragging", "");
+			setState(this.#internals, "dragging", true);
 			// Inline `transition: none` while the finger is down so each
 			// touchmove repaints the new transform instantaneously instead
 			// of chasing the previous frame on a 200ms easing curve.
@@ -527,7 +543,7 @@ export class NeoSidebar extends HTMLElement {
 	// finger position to either translateX(0) (snap) or the closed
 	// -100% (after hide()).
 	#clearDragStyles() {
-		this.removeAttribute("data-neo-sidebar-dragging");
+		setState(this.#internals, "dragging", false);
 		this.style.transform = "";
 		this.style.transition = "";
 		if (this.#backdropEl) {
@@ -637,7 +653,7 @@ export class NeoSidebar extends HTMLElement {
 		// while the host stayed connected. ensureBackdrop is idempotent.
 		this.#ensureBackdrop();
 		if (!this.#backdropEl) return;
-		const visible = this.hasAttribute("open") && (this.#wideMode === false || boolAttr(this, "overlay", false));
+		const visible = this.hasAttribute("open") && this.#isOverlayMode;
 		if (visible) {
 			this.#backdropEl.setAttribute("data-neo-open", "");
 		} else {

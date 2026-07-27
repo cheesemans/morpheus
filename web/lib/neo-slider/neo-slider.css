@@ -300,10 +300,12 @@ neo-slider [data-neo-slider-thumb]:focus-visible {
  * timing function appended; a full duration + timing-function pair
  * (e.g. "200ms cubic-bezier(.4,0,.2,1)") is used verbatim.
  *
- * `[data-neo-slider-dragging]` is set on the host while a pointer drag
- * is active and disables the transition so the thumb tracks the
- * cursor without lag; pointer-driven scrubbing is always immediate
- * regardless of the easing setting. */
+ * `:state(dragging)` is set on the host while a pointer drag is
+ * active and disables the transition so the thumb tracks the cursor
+ * without lag; pointer-driven scrubbing is always immediate
+ * regardless of the easing setting. `:state(rendering)` does the same
+ * across a rebuild, until the browser has committed the fresh
+ * geometry. */
 neo-slider[easing] [data-neo-slider-thumb] {
 	transition:
 		left var(--neo-slider-thumb-transition, 200ms ease),
@@ -324,10 +326,10 @@ neo-slider[easing][vertical] > [data-neo-slider-track] > [data-neo-slider-fill] 
 	transition: height var(--neo-slider-thumb-transition, 200ms ease);
 }
 
-neo-slider[easing][data-neo-slider-dragging] [data-neo-slider-thumb],
-neo-slider[easing][data-neo-slider-rendering] [data-neo-slider-thumb],
-neo-slider[easing][data-neo-slider-dragging] > [data-neo-slider-track] > [data-neo-slider-fill],
-neo-slider[easing][data-neo-slider-rendering] > [data-neo-slider-track] > [data-neo-slider-fill] {
+neo-slider[easing]:state(dragging) [data-neo-slider-thumb],
+neo-slider[easing]:state(rendering) [data-neo-slider-thumb],
+neo-slider[easing]:state(dragging) > [data-neo-slider-track] > [data-neo-slider-fill],
+neo-slider[easing]:state(rendering) > [data-neo-slider-track] > [data-neo-slider-fill] {
 	transition: none;
 }
 

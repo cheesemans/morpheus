@@ -559,6 +559,12 @@ var resizableDoc = ComponentDoc{
 		{Name: "step-horizontal", Type: "number", Description: templ.Raw("Snap width to a multiple of this many pixels while dragging. Omit for free resize.")},
 		{Name: "step-vertical", Type: "number", Description: templ.Raw("Snap height to a multiple of this many pixels while dragging. Omit for free resize.")},
 	},
+	States: []DocState{
+		{Name: "resizing",
+			Description: templ.Raw("Set while a handle drag is in flight.")},
+		{Name: "handle-<dir>",
+			Description: templ.Raw("Set alongside <code>resizing</code> for the handle being dragged (<code>handle-top</code>, <code>handle-bottom-left</code>, …); the kit uses it to pick the resize cursor.")},
+	},
 	Slots: []DocSlot{
 		{Name: "default", Description: templ.Raw("Resizable content.")},
 		{Name: "[data-neo-resizable-icon]",

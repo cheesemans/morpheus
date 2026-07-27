@@ -4,6 +4,7 @@
 // target on prev/next/keyboard/autoplay and dispatches change events.
 
 import { boolAttr, warnBadAxis } from "../command";
+import { setState } from "../internal-state";
 
 let nextCarouselId = 0;
 
@@ -19,7 +20,7 @@ let nextCarouselId = 0;
 //   tablist before any slotted controls (e.g. a data-neo-carousel-pause
 //   button). Pages overriding display (e.g. to grid) keep their own
 //   layout: grid-area on ::part(dots) wins.
-// - :host([data-neo-carousel-autoplay]) [data-neo-carousel-dots] >
+// - :host(:state(autoplay)) [data-neo-carousel-dots] >
 //   button[aria-current="true"]::after: active-dot sweep when autoplay is
 //   configured. The ::after grows from 0 -> full over
 //   --neo-carousel-autoplay-interval, set per-host by the JS.
@@ -86,14 +87,14 @@ CAROUSEL_TEMPLATE.innerHTML = `
     outline: 2px solid var(--neo-carousel-focus-ring, var(--accent, currentColor));
     outline-offset: 2px;
   }
-  :host([data-neo-carousel-autoplay]) [data-neo-carousel-dots] > button[aria-current="true"] {
+  :host(:state(autoplay)) [data-neo-carousel-dots] > button[aria-current="true"] {
     position: relative;
     width: calc(var(--neo-carousel-dot-size, 0.55rem) * 3);
     background: var(--neo-carousel-dot-bg, rgba(127, 127, 127, 0.25));
     transform: none;
     overflow: hidden;
   }
-  :host([data-neo-carousel-autoplay]) [data-neo-carousel-dots] > button[aria-current="true"]::after {
+  :host(:state(autoplay)) [data-neo-carousel-dots] > button[aria-current="true"]::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -104,11 +105,11 @@ CAROUSEL_TEMPLATE.innerHTML = `
     animation: neo-carousel-dot-fill
       var(--neo-carousel-autoplay-interval, 0s) linear forwards;
   }
-  :host([data-neo-carousel-autoplay][orientation="vertical"]) [data-neo-carousel-dots] > button[aria-current="true"]::after {
+  :host(:state(autoplay)[orientation="vertical"]) [data-neo-carousel-dots] > button[aria-current="true"]::after {
     transform-origin: top center;
   }
-  :host([data-neo-carousel-autoplay][paused]:not([paused="false"])) [data-neo-carousel-dots] > button[aria-current="true"]::after,
-  :host([data-neo-carousel-autoplay][data-neo-carousel-interacting]) [data-neo-carousel-dots] > button[aria-current="true"]::after {
+  :host(:state(autoplay)[paused]:not([paused="false"])) [data-neo-carousel-dots] > button[aria-current="true"]::after,
+  :host(:state(autoplay):state(interacting)) [data-neo-carousel-dots] > button[aria-current="true"]::after {
     animation-play-state: paused;
   }
   @keyframes neo-carousel-dot-fill {
@@ -117,7 +118,7 @@ CAROUSEL_TEMPLATE.innerHTML = `
   }
   @media (prefers-reduced-motion: reduce) {
     [data-neo-carousel-dots] > button { transition: none; }
-    :host([data-neo-carousel-autoplay]) [data-neo-carousel-dots] > button[aria-current="true"]::after {
+    :host(:state(autoplay)) [data-neo-carousel-dots] > button[aria-current="true"]::after {
       animation: none;
       transform: scaleX(1);
     }
@@ -136,10 +137,10 @@ CAROUSEL_TEMPLATE.innerHTML = `
       background: Highlight;
       box-shadow: inset 0 0 0 2px Highlight;
     }
-    :host([data-neo-carousel-autoplay]) [data-neo-carousel-dots] > button[aria-current="true"] {
+    :host(:state(autoplay)) [data-neo-carousel-dots] > button[aria-current="true"] {
       background: transparent;
     }
-    :host([data-neo-carousel-autoplay]) [data-neo-carousel-dots] > button[aria-current="true"]::after {
+    :host(:state(autoplay)) [data-neo-carousel-dots] > button[aria-current="true"]::after {
       background: Highlight;
     }
     [data-neo-carousel-dots] > button:focus-visible {
@@ -155,11 +156,11 @@ CAROUSEL_TEMPLATE.innerHTML = `
   :host-context(:root[data-pref-contrast-more]) [data-neo-carousel-dots] > button[data-neo-carousel-dot-visibility="full"] {
     background: var(--accent, currentColor);
   }
-  :host-context(:root[data-pref-contrast-more])[data-neo-carousel-autoplay] [data-neo-carousel-dots] > button[aria-current="true"] {
+  :host-context(:root[data-pref-contrast-more]):state(autoplay) [data-neo-carousel-dots] > button[aria-current="true"] {
     background: transparent;
     box-shadow: inset 0 0 0 2px currentColor;
   }
-  :host-context(:root[data-pref-contrast-more])[data-neo-carousel-autoplay] [data-neo-carousel-dots] > button[aria-current="true"]::after {
+  :host-context(:root[data-pref-contrast-more]):state(autoplay) [data-neo-carousel-dots] > button[aria-current="true"]::after {
     background: var(--accent, currentColor);
   }
 </style>
@@ -194,8 +195,11 @@ export class NeoCarousel extends HTMLElement {
 		"easing",
 	];
 
+	#internals: ElementInternals;
+
 	constructor() {
 		super();
+		this.#internals = this.attachInternals();
 		const root = this.attachShadow({ mode: "open" });
 		root.appendChild(CAROUSEL_TEMPLATE.content.cloneNode(true));
 	}
@@ -1525,9 +1529,7 @@ export class NeoCarousel extends HTMLElement {
 		if (this.#userScrolling) return;
 		this.#userScrolling = true;
 		if (this.#autoplayInterval === null) return;
-		if (!this.hasAttribute("data-neo-carousel-interacting")) {
-			this.setAttribute("data-neo-carousel-interacting", "");
-		}
+		setState(this.#internals, "interacting", true);
 		// Cancel any pending tick and reset elapsed so the *resume* path
 		// schedules a full interval, not a partial one.
 		if (this.#autoplayTimer !== null) {
@@ -1540,9 +1542,7 @@ export class NeoCarousel extends HTMLElement {
 	#endUserScroll() {
 		if (!this.#userScrolling) return;
 		this.#userScrolling = false;
-		if (this.hasAttribute("data-neo-carousel-interacting")) {
-			this.removeAttribute("data-neo-carousel-interacting");
-		}
+		setState(this.#internals, "interacting", false);
 		// Restart the active dot's fill animation from frame 0. The CSS
 		// animation is tied to the [aria-current="true"] selector; the
 		// bounce un-matches and re-matches the rule, which the engine
@@ -1611,11 +1611,11 @@ export class NeoCarousel extends HTMLElement {
 		let styleEl = document.getElementById(styleId) as HTMLStyleElement | null;
 		const interval = this.#autoplayInterval;
 		if (interval === null) {
-			this.removeAttribute("data-neo-carousel-autoplay");
+			setState(this.#internals, "autoplay", false);
 			styleEl?.remove();
 			return;
 		}
-		this.setAttribute("data-neo-carousel-autoplay", "");
+		setState(this.#internals, "autoplay", true);
 		if (!styleEl) {
 			styleEl = document.createElement("style");
 			styleEl.id = styleId;

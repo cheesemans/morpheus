@@ -263,6 +263,10 @@ var toasterDoc = ComponentDoc{
 		{Name: "<neo-toast> dismissible", Type: `"false"`,
 			Description: templ.Raw("Set to <code>false</code> on a declarative toast child to omit the close button and disable touch swipe dismissal for that toast.")},
 	},
+	States: []DocState{
+		{Name: "expanded",
+			Description: templ.Raw("Set while the stack is unfolded (hover, focus, or click). Dismiss timers are paused for as long as it holds.")},
+	},
 	Slots: []DocSlot{
 		{Name: "<neo-toast>",
 			Description: templ.Raw("Declarative toast children. Slot names inside each toast: <code>title</code>, <code>description</code>, <code>action</code>, <code>icon</code>. Imperative API: <code>NeoToast.show({...})</code>.")},

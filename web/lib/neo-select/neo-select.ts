@@ -16,8 +16,8 @@ const SELECT_SHADOW_TEMPLATE = document.createElement("template");
 // - [data-neo-select-trigger]:focus: ring lives on :host, not the trigger.
 //   A trigger ring would be clipped by a host overflow:hidden (e.g. inside
 //   neo-input-group). JS mirrors the trigger's :focus-visible onto the host
-//   via the attribute.
-// - :host([data-neo-focus-visible]): radius matches the trigger so the host
+//   as a custom state.
+// - :host(:state(focus-visible)): radius matches the trigger so the host
 //   ring rounds like neo-button's; --neo-button-radius is 0 inside
 //   neo-input-group, keeping it square there.
 // - [data-neo-select-trigger]:disabled: the trigger's native disabled flag
@@ -80,7 +80,7 @@ SELECT_SHADOW_TEMPLATE.innerHTML = `
   [data-neo-select-trigger]:focus-visible {
     outline: none;
   }
-  :host([data-neo-focus-visible]) {
+  :host(:state(focus-visible)) {
     outline: 2px solid var(--neo-button-focus-ring, currentColor);
     outline-offset: 2px;
     border-radius: var(--neo-button-radius, var(--page-radius, 0.5rem));

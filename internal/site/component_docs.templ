@@ -5,6 +5,10 @@ templ ComponentDocs(doc ComponentDoc) {
 		@apiSection(docSectionID(doc.Prefix, "attributes"), "Attributes", "parentheses")
 		@docAttributes(doc.Attributes)
 	}
+	if len(doc.States) > 0 {
+		@apiSection(docSectionID(doc.Prefix, "states"), "States", "activity")
+		@docStates(doc.States)
+	}
 	if len(doc.Slots) > 0 {
 		@apiSection(docSectionID(doc.Prefix, "slots"), "Slots", "chevrons-left-right-ellipsis")
 		@docSlots(doc.Slots)
@@ -130,6 +134,27 @@ templ docEvents(items []DocEvent) {
 					</td>
 					<td data-label="Description">
 						@docDesc(e.Description)
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+templ docStates(items []DocState) {
+	<table class="api-table">
+		<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			for _, s := range items {
+				<tr>
+					<th scope="row" data-label="Name"><code>{ ":state(" + s.Name + ")" }</code></th>
+					<td data-label="Description">
+						@docDesc(s.Description)
 					</td>
 				</tr>
 			}

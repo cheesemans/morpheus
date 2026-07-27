@@ -5,6 +5,7 @@
 // prepareReorderPatch() pre-morph.
 
 import { boolAttr } from "../command";
+import { setState } from "../internal-state";
 import { removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
 
 type Orientation = "vertical" | "horizontal" | "grid";
@@ -132,11 +133,22 @@ export class NeoSortable extends HTMLElement {
 	#focusedItemId = "";
 	#ready = false;
 
+	#internals: ElementInternals;
+
 	constructor() {
 		super();
+		this.#internals = this.attachInternals();
 		const root = this.attachShadow({ mode: "open" });
 		root.appendChild(SHADOW_TEMPLATE.content.cloneNode(true));
 		this.#live = root.querySelector<HTMLElement>("[data-neo-sortable-live]")!;
+	}
+
+	// A drag in flight, and whether a pointer drives it: the grabbing
+	// cursor belongs to a pointer reorder only, a keyboard reorder has no
+	// pointer to re-cursor.
+	#setDragState(kind: "pointer" | "keyboard" | null): void {
+		setState(this.#internals, "active", kind !== null);
+		setState(this.#internals, "pointer", kind === "pointer");
 	}
 
 	connectedCallback() {
@@ -485,11 +497,9 @@ export class NeoSortable extends HTMLElement {
 			liveDragEl.setAttribute("aria-grabbed", "true");
 		}
 		drag.item = liveDragEl;
-		// Re-stamp host state stripped by morph: role="list" when the
-		// component owns it, and data-neo-sortable-active (drives grabbing
-		// cursor + drag-in-flight signal).
+		// Re-stamp the role stripped by morph when the component owns it.
+		// The drag states are custom states, out of a morph's reach.
 		if (this.#ownsRole) setAttrIfChanged(this, "role", "list");
-		setAttrIfChanged(this, "data-neo-sortable-active", drag === this.#pointer ? "pointer" : "keyboard");
 		if (drag === this.#keyboard) {
 			drag.item.setAttribute("aria-grabbed", "true");
 			// Morph stripped tabindex (or replaced the grip span) and the
@@ -601,7 +611,7 @@ export class NeoSortable extends HTMLElement {
 				d.item.style.cssText = d.savedCss;
 				d.item.removeAttribute("data-neo-sortable-dragging");
 			}
-			this.removeAttribute("data-neo-sortable-active");
+			this.#setDragState(null);
 			// Drop any text selection the browser grew between mousedown
 			// and now (pre-threshold move, or a selection inside the item).
 			const sel = document.getSelection();
@@ -621,7 +631,7 @@ export class NeoSortable extends HTMLElement {
 				k.item.removeAttribute("data-neo-sortable-dragging");
 				k.item.removeAttribute("aria-grabbed");
 			}
-			this.removeAttribute("data-neo-sortable-active");
+			this.#setDragState(null);
 			this.#unlockScrollAnchor();
 			this.#announce("Reordering cancelled. List updated by another source.");
 			this.#emit("neo-sortable-end", {
@@ -1039,7 +1049,7 @@ export class NeoSortable extends HTMLElement {
 			this.insertBefore(ph, d.item);
 		}
 
-		this.setAttribute("data-neo-sortable-active", "pointer");
+		this.#setDragState("pointer");
 		d.item.setAttribute("data-neo-sortable-dragging", "");
 		this.setPointerCapture?.(e.pointerId);
 		this.#lockScrollAnchor();
@@ -1266,7 +1276,7 @@ export class NeoSortable extends HTMLElement {
 		if (d.proxy) d.placeholder.remove();
 		d.item.style.cssText = d.savedCss;
 		d.item.removeAttribute("data-neo-sortable-dragging");
-		this.removeAttribute("data-neo-sortable-active");
+		this.#setDragState(null);
 
 		if (cancelled) {
 			if (!d.proxy) d.placeholder.remove();
@@ -1372,7 +1382,7 @@ export class NeoSortable extends HTMLElement {
 			startOrder: this.order,
 			startContent: this.#snapshotContent(items),
 		};
-		this.setAttribute("data-neo-sortable-active", "keyboard");
+		this.#setDragState("keyboard");
 		item.setAttribute("data-neo-sortable-dragging", "");
 		item.setAttribute("aria-grabbed", "true");
 		this.#lockScrollAnchor();
@@ -1427,7 +1437,7 @@ export class NeoSortable extends HTMLElement {
 		this.#keyboard = null;
 		k.item.removeAttribute("data-neo-sortable-dragging");
 		k.item.removeAttribute("aria-grabbed");
-		this.removeAttribute("data-neo-sortable-active");
+		this.#setDragState(null);
 		this.#unlockScrollAnchor();
 		const count = this.#items().length;
 		const to = this.#items().indexOf(k.item);
@@ -1449,7 +1459,7 @@ export class NeoSortable extends HTMLElement {
 		this.#restore(k.startOrderEls);
 		k.item.removeAttribute("data-neo-sortable-dragging");
 		k.item.removeAttribute("aria-grabbed");
-		this.removeAttribute("data-neo-sortable-active");
+		this.#setDragState(null);
 		this.#unlockScrollAnchor();
 		this.#gripOf(k.item).focus?.();
 		this.#emit("neo-sortable-end", {
