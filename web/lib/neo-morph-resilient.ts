@@ -9,16 +9,12 @@
 // The resync MUST be idempotent at the attribute level: per spec,
 // setAttribute always queues a mutation record (even on a same-value
 // write), which would re-fire the observer and loop. Use
-// setAttrIfChanged / removeAttrIfPresent for any write the resync
-// performs so a no-op pass produces no records and the observer
-// settles.
+// setAttrIfChanged for any write the resync performs so a no-op pass
+// produces no records and the observer settles. removeAttribute takes
+// no such wrapper: on an absent attribute it queues no record.
 
 export function setAttrIfChanged(el: Element, name: string, value: string): void {
 	if (el.getAttribute(name) !== value) el.setAttribute(name, value);
-}
-
-export function removeAttrIfPresent(el: Element, name: string): void {
-	if (el.hasAttribute(name)) el.removeAttribute(name);
 }
 
 export function observeManagedAttrs(el: Element, attrs: readonly string[], resync: () => void): MutationObserver {

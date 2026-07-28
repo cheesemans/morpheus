@@ -1,5 +1,5 @@
 import { boolAttr, boolCommand } from "../command";
-import { observeManagedAttrs, removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
+import { observeManagedAttrs, setAttrIfChanged } from "../neo-morph-resilient";
 
 const RESILIENT_ATTRS = ["role", "tabindex", "aria-disabled", "aria-checked"];
 
@@ -98,7 +98,7 @@ export class NeoSwitch extends HTMLElement {
 			setAttrIfChanged(this, "aria-disabled", "true");
 			setAttrIfChanged(this, "tabindex", "-1");
 		} else {
-			removeAttrIfPresent(this, "aria-disabled");
+			this.removeAttribute("aria-disabled");
 			if (!this.hasAttribute("tabindex")) this.setAttribute("tabindex", "0");
 		}
 	}

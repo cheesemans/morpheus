@@ -38,8 +38,8 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 // Ring geometry. The visible radius defaults to R=10.5 (so a 3-unit stroke fits the
 // 24-unit viewBox exactly), but CSS (`r: calc(12px − ringWidth/2)`)
-// shrinks it whenever a theme bumps --neo-spinner-ring-width. Dash
-// values use a normalised 0–100 scale via pathLength so they survive
+// shrinks it whenever a theme bumps --neo-spinner-ring-width.
+// Dash values use a normalised 0-100 scale via pathLength so they survive
 // that shrink without redoing the maths.
 const R = 10.5;
 const PATH_LENGTH = 100;
@@ -55,9 +55,9 @@ export class NeoSpinner extends HTMLElement {
 	#ringEl: SVGSVGElement | null = null;
 	#arcEl: SVGCircleElement | null = null;
 	// Current value; `value` reflects it (see command). Survives a morph that
-	// strips the attribute so a fat morph omitting `value` can't reset the arc
-	// to min. `#hasValue` tracks whether a value was ever given: a bare
-	// indeterminate spinner that never had one stays decorative.
+	// strips the attribute so a fat morph omitting `value` can't reset the arc to min.
+	// `#hasValue` tracks whether a value was ever given:
+	// a bare indeterminate spinner that never had one stays decorative.
 	#valueIntent = 0;
 	#hasValue = false;
 	// set value()/reflect write `value` via setAttribute, which would otherwise

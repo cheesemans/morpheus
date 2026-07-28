@@ -1,5 +1,5 @@
 import { boolAttr, boolCommand } from "../command";
-import { observeManagedAttrs, removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
+import { observeManagedAttrs, setAttrIfChanged } from "../neo-morph-resilient";
 
 // `role` is already in observedAttributes so syncPressedState can swap
 // aria-pressed/aria-checked when the role flips; the morph-resilience
@@ -91,10 +91,10 @@ export class NeoToggle extends HTMLElement {
 		const pressed = String(this.pressed);
 		if (this.getAttribute("role") === "radio") {
 			setAttrIfChanged(this, "aria-checked", pressed);
-			removeAttrIfPresent(this, "aria-pressed");
+			this.removeAttribute("aria-pressed");
 		} else {
 			setAttrIfChanged(this, "aria-pressed", pressed);
-			removeAttrIfPresent(this, "aria-checked");
+			this.removeAttribute("aria-checked");
 		}
 	}
 
@@ -103,7 +103,7 @@ export class NeoToggle extends HTMLElement {
 			setAttrIfChanged(this, "aria-disabled", "true");
 			setAttrIfChanged(this, "tabindex", "-1");
 		} else {
-			removeAttrIfPresent(this, "aria-disabled");
+			this.removeAttribute("aria-disabled");
 			if (!this.hasAttribute("tabindex")) this.setAttribute("tabindex", "0");
 		}
 	}

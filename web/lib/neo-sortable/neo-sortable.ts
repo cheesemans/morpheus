@@ -6,7 +6,7 @@
 
 import { boolAttr } from "../command";
 import { setState } from "../internal-state";
-import { removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
+import { setAttrIfChanged } from "../neo-morph-resilient";
 
 type Orientation = "vertical" | "horizontal" | "grid";
 
@@ -332,7 +332,7 @@ export class NeoSortable extends HTMLElement {
 		if (this.#ownsRole) setAttrIfChanged(this, "role", "list");
 		const disabled = this.#isDisabled;
 		if (disabled) setAttrIfChanged(this, "aria-disabled", "true");
-		else removeAttrIfPresent(this, "aria-disabled");
+		else this.removeAttribute("aria-disabled");
 
 		const items = this.#items();
 		const grips = new Set<HTMLElement>();
@@ -364,8 +364,8 @@ export class NeoSortable extends HTMLElement {
 		}
 		for (const stale of this.querySelectorAll<HTMLElement>("[data-neo-sortable-grip]")) {
 			if (!grips.has(stale)) {
-				removeAttrIfPresent(stale, "data-neo-sortable-grip");
-				removeAttrIfPresent(stale, "data-neo-sortable-tabindex");
+				stale.removeAttribute("data-neo-sortable-grip");
+				stale.removeAttribute("data-neo-sortable-tabindex");
 			}
 		}
 	}

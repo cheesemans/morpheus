@@ -1,5 +1,5 @@
 import { boolAttr } from "../command";
-import { observeManagedAttrs, removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
+import { observeManagedAttrs, setAttrIfChanged } from "../neo-morph-resilient";
 
 const RESILIENT_ATTRS = ["role", "tabindex", "aria-disabled"];
 
@@ -47,7 +47,7 @@ export class NeoButton extends HTMLElement {
 			setAttrIfChanged(this, "aria-disabled", "true");
 			setAttrIfChanged(this, "tabindex", "-1");
 		} else {
-			removeAttrIfPresent(this, "aria-disabled");
+			this.removeAttribute("aria-disabled");
 			// Composite widgets (navgroup etc.) manage tabindex themselves.
 			setAttrIfChanged(this, "tabindex", this.#callerTabIndex ?? "0");
 		}

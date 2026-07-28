@@ -78,7 +78,7 @@ function observeKeyboardOnce(): void {
 }
 
 import { boolAttr } from "../command";
-import { observeManagedAttrs, removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
+import { observeManagedAttrs, setAttrIfChanged } from "../neo-morph-resilient";
 
 const RESILIENT_ATTRS = ["role", "tabindex", "aria-disabled"];
 
@@ -136,7 +136,7 @@ export class NeoMenuItem extends HTMLElement {
 		if (boolAttr(this, "disabled", false)) {
 			setAttrIfChanged(this, "aria-disabled", "true");
 		} else {
-			removeAttrIfPresent(this, "aria-disabled");
+			this.removeAttribute("aria-disabled");
 		}
 	}
 

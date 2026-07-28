@@ -1,5 +1,5 @@
 import { boolAttr, warnBadAxis } from "../command";
-import { observeManagedAttrs, removeAttrIfPresent, setAttrIfChanged } from "../neo-morph-resilient";
+import { observeManagedAttrs, setAttrIfChanged } from "../neo-morph-resilient";
 
 // `aria-checked` and `tabindex` are written by the enclosing group's
 // refresh(); when the morph strips them and bypasses the group's
@@ -62,7 +62,7 @@ export class NeoRadio extends HTMLElement {
 		if (boolAttr(this, "disabled", false)) {
 			setAttrIfChanged(this, "aria-disabled", "true");
 		} else {
-			removeAttrIfPresent(this, "aria-disabled");
+			this.removeAttribute("aria-disabled");
 		}
 	}
 }
