@@ -1,0 +1,49 @@
+.skeleton-morph-avatar {
+	width: 3rem;
+}
+
+.skeleton-morph-name {
+	width: 45%;
+}
+
+.skeleton-morph-meta {
+	width: 70%;
+	height: 0.75rem;
+}
+
+.skeleton-morph-hero {
+	height: 6rem;
+	margin-top: 0.9rem;
+}
+
+.skeleton-morph-body {
+	margin-top: 0.9rem;
+}
+
+.skeleton-morph-line-short {
+	width: 70%;
+}
+
+/* Loaded counterparts: same box metrics as the skeletons they replace. */
+.skeleton-morph-avatar-loaded {
+	width: 3rem;
+	height: 3rem;
+	flex: none;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+	background: color-mix(in srgb, var(--page-fg) 15%, transparent);
+}
+
+.skeleton-morph-hero-loaded {
+	height: 6rem;
+	margin-top: 0.9rem;
+	border-radius: 0.25rem;
+	background: color-mix(in srgb, var(--page-fg) 8%, transparent);
+}
+
+.skeleton-morph-muted {
+	color: var(--muted);
+}

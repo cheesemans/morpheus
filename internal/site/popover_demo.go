@@ -45,10 +45,10 @@ var popoverPlaygroundOpenHTML string
 // `open` attribute needed; the user opens it).
 func popoverMorphStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Initial", HTML: popoverMorphInitialHTML},
-		{Label: "Progress: 50%", HTML: popoverMorph50HTML},
-		{Label: "Progress: 75%", HTML: popoverMorph75HTML},
-		{Label: "Progress: 100%", HTML: popoverMorph100HTML},
+		{Label: "Initial", HTML: popoverMorphInitialHTML, CSS: popoverMorphCSS},
+		{Label: "Progress: 50%", HTML: popoverMorph50HTML, CSS: popoverMorphCSS},
+		{Label: "Progress: 75%", HTML: popoverMorph75HTML, CSS: popoverMorphCSS},
+		{Label: "Progress: 100%", HTML: popoverMorph100HTML, CSS: popoverMorphCSS},
 	}
 }
 
@@ -64,7 +64,13 @@ var popoverMorph75HTML string
 //go:embed examples/popover_morph_100.html
 var popoverMorph100HTML string
 
-// The tall/strict/wide examples carry their own scoped `<style>` and the
+// popoverMorphCSS styles all four morph states: the classes are stable
+// across the swap, so only the spinner value and label differ.
+//
+//go:embed examples/popover_morph.css
+var popoverMorphCSS string
+
+// The tall/strict/wide examples carry their own sibling .css and the
 // long country / mega-menu lists so one self-sufficient source feeds both
 // the playground state and the "Examples" demo frame without depending on
 // `static/style.css`.

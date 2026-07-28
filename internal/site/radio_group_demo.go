@@ -8,8 +8,10 @@ import (
 
 func radioGroupPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Default", HTML: radioGroupPlaygroundDefaultHTML},
-		{Label: "Horizontal", HTML: radioGroupHorizontalHTML, CSS: radioGroupHorizontalCSS},
+		{Label: "Default", HTML: radioGroupPlaygroundDefaultHTML,
+			CSS: radioGroupPlaygroundDefaultCSS},
+		{Label: "Horizontal", HTML: radioGroupHorizontalHTML,
+			CSS: radioGroupHorizontalCSS},
 		{Label: "Rich rows", HTML: radioGroupRichRowsHTML, CSS: radioGroupRichRowsCSS},
 		{Label: "Disabled", HTML: radioGroupDisabledHTML, CSS: radioGroupDisabledCSS},
 		{Label: "Auto-activate", HTML: radioGroupAutoActivateHTML, CSS: radioGroupAutoActivateCSS},
@@ -18,6 +20,9 @@ func radioGroupPlaygroundStates() []PlaygroundState {
 
 //go:embed examples/radio_group_default.html
 var radioGroupPlaygroundDefaultHTML string
+
+//go:embed examples/radio_group_default.css
+var radioGroupPlaygroundDefaultCSS string
 
 var radioGroupHorizontalHTML = renderExampleHTML(examples.RadioGroupHorizontal())
 

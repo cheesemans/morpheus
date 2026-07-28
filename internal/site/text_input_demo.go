@@ -88,7 +88,7 @@ func textInputSuggestStates() []PlaygroundState {
 		{Label: "Initial", HTML: textInputSuggestInitialHTML},
 		{Label: "Suggestions", HTML: textInputSuggestFilledHTML},
 		{Label: "Disabled", HTML: textInputSuggestDisabledHTML},
-		{Label: "Rich", HTML: textInputSuggestRichHTML},
+		{Label: "Rich", HTML: textInputSuggestRichHTML, CSS: textInputSuggestRichCSS},
 		{Label: "No results", HTML: textInputSuggestEmptyHTML},
 	}
 }
@@ -107,3 +107,9 @@ var textInputSuggestRichHTML string
 
 //go:embed examples/text_input_suggest_empty.html
 var textInputSuggestEmptyHTML string
+
+// textInputSuggestRichCSS styles the rich rows: the same three-part row
+// repeats for every option.
+//
+//go:embed examples/text_input_suggest_rich.css
+var textInputSuggestRichCSS string

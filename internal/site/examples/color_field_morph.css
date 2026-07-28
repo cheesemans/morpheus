@@ -1,0 +1,22 @@
+.color-field-morph-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	align-items: flex-start;
+}
+
+.color-field-morph-row {
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+/* The swatch's background stays inline: it is the bound value, rewritten
+   by data-attr:style on every input. */
+.color-field-morph-swatch {
+	width: 1.25rem;
+	height: 1.25rem;
+	border-radius: 0.25rem;
+	border: 1px solid var(--border);
+}

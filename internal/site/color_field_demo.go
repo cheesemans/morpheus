@@ -12,7 +12,8 @@ func colorFieldPlaygroundStates() []PlaygroundState {
 		{Label: "Derived hue", HTML: colorFieldDerivedHueHTML},
 		{Label: "Explicit hue", HTML: colorFieldExplicitHueHTML},
 		{Label: "Disabled", HTML: colorFieldDisabledHTML},
-		{Label: "Custom size", HTML: colorFieldCustomSizeHTML, CSS: colorFieldCustomSizeCSS},
+		{Label: "Custom size", HTML: colorFieldCustomSizeHTML,
+			CSS: colorFieldCustomSizeCSS},
 	}
 }
 
@@ -26,9 +27,11 @@ var colorFieldPlaygroundDefaultHTML string
 // keeps idiomorph from tearing the element down across states.
 func colorFieldMorphStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Initial", HTML: colorFieldMorphInitialHTML},
-		{Label: "Different color", HTML: colorFieldMorphColorHTML},
-		{Label: "Disabled", HTML: colorFieldMorphDisabledHTML},
+		{Label: "Initial", HTML: colorFieldMorphInitialHTML, CSS: colorFieldMorphCSS},
+		{Label: "Different color", HTML: colorFieldMorphColorHTML,
+			CSS: colorFieldMorphCSS},
+		{Label: "Disabled", HTML: colorFieldMorphDisabledHTML,
+			CSS: colorFieldMorphCSS},
 	}
 }
 
@@ -40,6 +43,12 @@ var colorFieldMorphColorHTML string
 
 //go:embed examples/color_field_morph_disabled.html
 var colorFieldMorphDisabledHTML string
+
+// colorFieldMorphCSS styles all three morph states; only the swatch's
+// background stays inline, since that is the bound value.
+//
+//go:embed examples/color_field_morph.css
+var colorFieldMorphCSS string
 
 // Static-source pairs (HTML + Templ) for the per-example demos in the
 // Color field page's "Examples" section.

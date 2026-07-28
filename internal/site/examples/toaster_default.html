@@ -1,25 +1,3 @@
-<style>
-  .toaster-demo-host {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    width: 100%;
-    height: 100%;
-    align-content: flex-start;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-  .toaster-demo-host > neo-toaster[contained] {
-    --neo-toaster-max-height: calc(
-      100% -
-        var(--neo-toaster-padding, 1rem) -
-        var(--neo-toaster-padding, 1rem) +
-        var(--neo-toast-shadow-bleed, 1.5rem) +
-        var(--neo-toast-shadow-bleed, 1.5rem)
-    );
-  }
-</style>
 <div class="toaster-demo-host" id="toaster-playground-default">
   <neo-button variant="primary" data-on:click="document.getElementById('toaster-playground-toaster').show({ title: 'Profile saved', variant: 'success', duration: 2000 })">
     Success

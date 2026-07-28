@@ -29,9 +29,9 @@ func elasticPlaygroundStates() []PlaygroundState {
 // idiomorph from tearing the element down across states.
 func elasticMorphStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Initial", HTML: elasticMorphInitialHTML},
-		{Label: "Taller content", HTML: elasticMorphTallerHTML},
-		{Label: "Shorter content", HTML: elasticMorphShorterHTML},
+		{Label: "Initial", HTML: elasticMorphInitialHTML, CSS: elasticMorphCSS},
+		{Label: "Taller content", HTML: elasticMorphTallerHTML, CSS: elasticMorphCSS},
+		{Label: "Shorter content", HTML: elasticMorphShorterHTML, CSS: elasticMorphCSS},
 	}
 }
 
@@ -43,6 +43,12 @@ var elasticMorphTallerHTML string
 
 //go:embed examples/elastic_morph_shorter.html
 var elasticMorphShorterHTML string
+
+// elasticMorphCSS styles all three morph states: the classes are stable
+// across the swap, so only the content differs from state to state.
+//
+//go:embed examples/elastic_morph.css
+var elasticMorphCSS string
 
 // elasticPlaygroundDefaultHTML is the baseline content height the
 // playground animates away from; switching to elasticPlaygroundBiggerHTML

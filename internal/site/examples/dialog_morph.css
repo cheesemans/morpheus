@@ -1,0 +1,17 @@
+.dialog-morph-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.dialog-morph-text {
+	margin: 0;
+}
+
+.dialog-morph-list {
+	margin: 0;
+	padding-left: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}

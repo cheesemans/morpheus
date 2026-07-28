@@ -9,7 +9,7 @@ import (
 func tooltipPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: tooltipPlaygroundDefaultHTML},
-		{Label: "Placements", HTML: tooltipPlacementsHTML},
+		{Label: "Placements", HTML: tooltipPlacementsHTML, CSS: tooltipPlacementsCSS},
 		{Label: "Shorthand body", HTML: tooltipShorthandHTML},
 		{Label: "Rich content", HTML: tooltipRichHTML, CSS: tooltipRichCSS},
 		{Label: "Delays", HTML: tooltipDelaysHTML},

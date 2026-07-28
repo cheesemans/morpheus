@@ -26,7 +26,8 @@ var toasterPatchReplaceScript string
 
 func toasterPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Default", HTML: toasterPlaygroundDefaultHTML},
+		{Label: "Default", HTML: toasterPlaygroundDefaultHTML,
+			CSS: toasterPlaygroundDefaultCSS},
 		{Label: "Variants", HTML: toasterVariantsHTML},
 		{Label: "Title + description", HTML: toasterTitleDescHTML},
 		{Label: "Stack + dismiss-all", HTML: toasterStackDismissHTML},
@@ -35,13 +36,15 @@ func toasterPlaygroundStates() []PlaygroundState {
 
 // The Default playground state demonstrates a contained toaster driven
 // imperatively: its triggers target the example's own toaster via
-// getElementById, not the page-wide NeoToast singleton. The scoped
-// <style> caps the contained stack's max-height (a descendant rule that
-// can't be inlined onto the host); the host frame's inline flex layout
-// anchors the toaster and stacks the triggers at the top.
+// getElementById, not the page-wide NeoToast singleton. Its CSS caps the
+// contained stack's max-height and gives the host frame the flex layout
+// that anchors the toaster and stacks the triggers at the top.
 //
 //go:embed examples/toaster_default.html
 var toasterPlaygroundDefaultHTML string
+
+//go:embed examples/toaster_default.css
+var toasterPlaygroundDefaultCSS string
 
 // toasterAppShellHTML / toasterAppShellTempl are the static source for
 // the "Triggers the app-shell toaster" example: two buttons that POST

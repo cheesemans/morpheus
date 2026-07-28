@@ -1,0 +1,24 @@
+.text-input-suggest-rich-icon {
+	flex: 0 0 auto;
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--muted);
+}
+
+.text-input-suggest-rich-row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	min-width: 0;
+}
+
+.text-input-suggest-rich-name {
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.text-input-suggest-rich-role {
+	font-size: 0.85em;
+	color: var(--muted);
+	line-height: 1.3;
+}

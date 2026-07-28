@@ -8,11 +8,14 @@ import (
 
 func sidebarPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Default", HTML: sidebarDefaultHTML},
-		{Label: "Mixed breakpoints", HTML: sidebarMixedBreakpointsHTML, CSS: sidebarMixedBreakpointsCSS},
-		{Label: "Resizable widths", HTML: sidebarResizableHTML, CSS: sidebarResizableCSS},
-		{Label: "Touch-dismiss", HTML: sidebarTouchDismissHTML, CSS: sidebarTouchDismissCSS},
-		{Label: "Minimized rail", HTML: sidebarMinimizedHTML},
+		{Label: "Default", HTML: sidebarDefaultHTML, CSS: sidebarDefaultCSS},
+		{Label: "Mixed breakpoints", HTML: sidebarMixedBreakpointsHTML,
+			CSS: sidebarMixedBreakpointsCSS},
+		{Label: "Resizable widths", HTML: sidebarResizableHTML,
+			CSS: sidebarResizableCSS},
+		{Label: "Touch-dismiss", HTML: sidebarTouchDismissHTML,
+			CSS: sidebarTouchDismissCSS},
+		{Label: "Minimized rail", HTML: sidebarMinimizedHTML, CSS: sidebarMinimizedCSS},
 	}
 }
 
@@ -31,6 +34,9 @@ func sidebarPlaygroundStates() []PlaygroundState {
 //
 //go:embed examples/sidebar_default.html
 var sidebarDefaultHTML string
+
+//go:embed examples/sidebar_default.css
+var sidebarDefaultCSS string
 
 // sidebarMixedBreakpointsHTML: a left nav at overlay-breakpoint="30rem"
 // and a right settings drawer at overlay-breakpoint="50rem".
@@ -67,6 +73,9 @@ var sidebarTouchDismissCSS string
 //
 //go:embed examples/sidebar_minimized.html
 var sidebarMinimizedHTML string
+
+//go:embed examples/sidebar_minimized.css
+var sidebarMinimizedCSS string
 
 // sidebarAsyncLoadingHTML: each open posts to the server, which morphs the
 // account panel into the content slot; close resets it to the skeleton.

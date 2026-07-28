@@ -10,7 +10,8 @@ func dialogPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: dialogPlaygroundDefaultHTML},
 		{Label: "Non-dismissible", HTML: dialogNonDismissibleHTML},
-		{Label: "Custom surface", HTML: dialogCustomSurfaceHTML, CSS: dialogCustomSurfaceCSS},
+		{Label: "Custom surface", HTML: dialogCustomSurfaceHTML,
+			CSS: dialogCustomSurfaceCSS},
 	}
 }
 
@@ -22,8 +23,9 @@ func dialogPlaygroundStates() []PlaygroundState {
 // animates the dialog's height between the two layouts.
 func dialogMorphStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Initial", HTML: dialogMorphInitialHTML},
-		{Label: "Different content", HTML: dialogMorphDifferentHTML},
+		{Label: "Initial", HTML: dialogMorphInitialHTML, CSS: dialogMorphCSS},
+		{Label: "Different content", HTML: dialogMorphDifferentHTML,
+			CSS: dialogMorphCSS},
 	}
 }
 
@@ -32,6 +34,12 @@ var dialogMorphInitialHTML string
 
 //go:embed examples/dialog_morph_different.html
 var dialogMorphDifferentHTML string
+
+// dialogMorphCSS styles both morph states: the classes are stable across
+// the swap, so only the content inside the body differs.
+//
+//go:embed examples/dialog_morph.css
+var dialogMorphCSS string
 
 //go:embed examples/dialog_default.html
 var dialogPlaygroundDefaultHTML string

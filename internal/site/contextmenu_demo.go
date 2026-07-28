@@ -8,7 +8,8 @@ import (
 
 func contextMenuPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Default", HTML: contextMenuPlaygroundDefaultHTML},
+		{Label: "Default", HTML: contextMenuPlaygroundDefaultHTML,
+			CSS: contextMenuPlaygroundDefaultCSS},
 		{Label: "Simple", HTML: contextMenuSimpleHTML, CSS: contextMenuSimpleCSS},
 		{Label: "Nested", HTML: contextMenuNestedHTML, CSS: contextMenuNestedCSS},
 		{Label: "Custom content", HTML: contextMenuCustomHTML, CSS: contextMenuCustomCSS},
@@ -22,6 +23,9 @@ func contextMenuPlaygroundStates() []PlaygroundState {
 
 //go:embed examples/context_menu_default.html
 var contextMenuPlaygroundDefaultHTML string
+
+//go:embed examples/context_menu_default.css
+var contextMenuPlaygroundDefaultCSS string
 
 var contextMenuSimpleHTML = renderExampleHTML(examples.ContextMenuSimple())
 

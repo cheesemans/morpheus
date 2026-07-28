@@ -13,8 +13,9 @@ import (
 // mounted while only its inner nodes swap.
 func skeletonMorphStates() []PlaygroundState {
 	return []PlaygroundState{
-		{Label: "Loading", HTML: skeletonMorphLoadingHTML},
-		{Label: "Content loaded", HTML: skeletonMorphLoadedHTML},
+		{Label: "Loading", HTML: skeletonMorphLoadingHTML, CSS: skeletonMorphCSS},
+		{Label: "Content loaded", HTML: skeletonMorphLoadedHTML,
+			CSS: skeletonMorphCSS},
 	}
 }
 
@@ -23,6 +24,13 @@ var skeletonMorphLoadingHTML string
 
 //go:embed examples/skeleton_morph_loaded.html
 var skeletonMorphLoadedHTML string
+
+// skeletonMorphCSS styles both morph states: each loaded element keeps
+// the box metrics of the skeleton it replaces, so the card holds its
+// height across the swap.
+//
+//go:embed examples/skeleton_morph.css
+var skeletonMorphCSS string
 
 // Per-example demos for the Skeleton page's "Examples" section. Each
 // example is a single templ function under examples/: its render
