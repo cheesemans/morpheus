@@ -494,6 +494,7 @@ export class NeoLightbox extends HTMLElement {
 
 	// Enter the presentation layer: top-layer popover + scroll lock for
 	// screen scope; container scope shows purely through the [open] CSS.
+	// Idempotent, so callers never pre-check the presented state.
 	#present(): void {
 		if (this.#isContainer()) return;
 		if (this.isConnected && this.#overlay.hasAttribute("popover") && !this.#overlay.matches(":popover-open")) {
@@ -598,7 +599,7 @@ export class NeoLightbox extends HTMLElement {
 			this.#recoverScheduled = false;
 			if (!this.#openIntent || !this.isConnected) return;
 			this.#reflectOpen();
-			if (!this.#isContainer() && !this.#overlay.matches(":popover-open")) this.#present();
+			this.#present();
 		});
 	}
 
