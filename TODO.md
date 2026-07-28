@@ -5,9 +5,6 @@
 neo-toast-close fires only on manual close (2026-07-07):
 - `web/lib/neo-toast/neo-toast.ts:212` dispatches `neo-toast-close` only from `#onCloseClick` (the × button). Auto-dismiss (timer), swipe-to-dismiss, and `NeoToast.dismiss()` remove the toast via `neo-toaster.ts` `#removeToast` (`web/lib/neo-toaster/neo-toaster.ts:825`) without emitting any event, so consumers cannot observe non-manual dismissals. Convention is one close/dismiss event on every removal. Fix: dispatch `neo-toast-close` for every dismissal cause (e.g. from `#removeToast`).
 
-neo-avatars custom-overflow subtree blanked (2026-07-04):
-- `neo-avatars.ts` `#setDefaultOverflowLabel` (`web/lib/neo-avatars/neo-avatars.ts:174`) blanks a custom overflow's whole subtree via `textContent = ""` when no `[data-neo-avatars-overflow-count]` descendant exists. Any custom overflow template lacking a count target loses its content. Consider guarding the default-label path when the overflow is custom.
-
 `.ts` source audit (2026-06-28) vs DESIGN.md + .claude/skills + CLAUDE.md (verified):
 
 No-em-dash convention (memory feedback_no_em_dashes) - broad sweep needed:

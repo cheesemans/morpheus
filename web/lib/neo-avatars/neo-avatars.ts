@@ -163,7 +163,11 @@ export class NeoAvatars extends HTMLElement {
 					target.textContent = String(overflowTotal);
 				}
 			}
-		} else if (overflow.textContent !== `+${overflowTotal}`) {
+		} else if (!this.#overflowIsCustom && overflow.textContent !== `+${overflowTotal}`) {
+			// A custom template owns its content: only the generated overflow
+			// takes the default "+N" label. Without a count target the total
+			// stays readable from [data-neo-avatars-overflow-value] and from
+			// the control's aria-label.
 			this.#setDefaultOverflowLabel(overflow, overflowTotal);
 		}
 
