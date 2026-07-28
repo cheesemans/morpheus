@@ -6,12 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Persist page's "Examples" section. Persist is a behavioural primitive.
-// It wraps a child and snapshots a few properties on listed events,
-// no per-instance knobs worth a live-params form. Each pair shows the
-// markup an author would copy/paste verbatim.
-
 var persistScrollHTML = renderExampleHTML(examples.PersistScroll())
 
 //go:embed examples/persist_scroll.templ

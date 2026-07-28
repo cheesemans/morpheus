@@ -17,19 +17,8 @@ func switchPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// Default playground state. `checked` is the primary editable
-// attribute; it's boolean, so the signal seeds a JSON boolean (true),
-// not a string. Namespaced to avoid clashing with other playgrounds.
-// The label is inline-styled (mirroring `.switch-label`) so the editable
-// CodeMirror document needs no site stylesheet class.
-//
 //go:embed examples/switch_default.html
 var switchPlaygroundDefaultHTML string
-
-// One self-sufficient example per state. Each is the single source for
-// BOTH the playground state and the Examples-section render+source, with
-// its sibling .css embedded and injected scoped so the shown source fully
-// explains its own look.
 
 var switchStatesHTML = renderExampleHTML(examples.SwitchStates())
 
@@ -54,9 +43,6 @@ var switchSettingsGroupTempl string
 
 //go:embed examples/switch_settings_group.css
 var switchSettingsGroupCSS string
-
-// Static-source pairs (HTML + Templ) for the per-example demos that
-// don't rely on a site-local class.
 
 var switchSmallHTML = renderExampleHTML(examples.SwitchSmall())
 

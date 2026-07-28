@@ -20,10 +20,6 @@ func revealablePlaygroundStates() []PlaygroundState {
 //go:embed examples/revealable_default.html
 var revealablePlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos on the
-// Revealable page. Each pair shows the markup an author would
-// copy/paste verbatim next to its rendered counterpart.
-
 var revealableImageHTML = renderExampleHTML(examples.RevealableImage())
 
 //go:embed examples/revealable_image.templ

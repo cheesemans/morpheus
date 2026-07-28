@@ -24,19 +24,9 @@ func sliderPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// sliderPlaygroundDefaultHTML is the playground's starting state: a
-// representative slider whose primary `value` attribute is made
-// signal-editable so the playground's signal controls can drive it.
-//
 //go:embed examples/slider_default.html
 var sliderPlaygroundDefaultHTML string
 
-// sliderMorphStates seeds the "Morphing during interaction" playground.
-// Each state is the bare host; only the `value` attribute differs. The
-// painted rail/thumb live in the component's shadow root, so a plain
-// fat-morph reconciles only the host attribute and the easing transition
-// eases the thumb/fill to the new value. A light-DOM build would instead
-// rebuild the internals at the new value, which snaps; see neo-slider.ts.
 func sliderMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "0%", HTML: sliderMorph0HTML},
@@ -53,12 +43,6 @@ var sliderMorph30HTML string
 
 //go:embed examples/slider_morph_100.html
 var sliderMorph100HTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Slider page's "Examples" section. Each pair shows the markup an
-// author would copy/paste verbatim, with no Datastar wiring, no live
-// params. The demos these power don't have a live form, so the source
-// isn't trying to track anything dynamic.
 
 var sliderMarksHTML = renderExampleHTML(examples.SliderMarks())
 
@@ -85,11 +69,6 @@ var sliderEasingHTML = renderExampleHTML(examples.SliderEasing())
 //go:embed examples/slider_easing.templ
 var sliderEasingTempl string
 
-// sliderStarsHTML is self-sufficient: the star styling targets shadow
-// parts (neo-icon::part) and component-rendered track/anchor/thumb
-// elements that can't be reached by inline style, so the sibling .css
-// carries the rules, namespaced by `.slider-stars-pg`. One source
-// drives both the Examples demo and the playground state.
 var sliderStarsHTML = renderExampleHTML(examples.SliderStars())
 
 //go:embed examples/slider_stars.templ
@@ -98,11 +77,6 @@ var sliderStarsTempl string
 //go:embed examples/slider_stars.css
 var sliderStarsCSS string
 
-// sliderValueBarHTML restyles the rail into a Blender-style value bar. The
-// styling reaches the shadow internals through neo-slider::part(...) and the
-// --neo-slider-* custom properties, so the sibling .css carries the
-// rules, namespaced by `.slider-value-bar-pg`. One source drives both the
-// Examples demo and the playground state.
 var sliderValueBarHTML = renderExampleHTML(examples.SliderValueBar())
 
 //go:embed examples/slider_value_bar.templ

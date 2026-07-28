@@ -20,12 +20,6 @@ func carouselPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// One self-sufficient example templ per case, used as BOTH the playground
-// state and the Examples-section render+source. No site-local demo classes:
-// every example pairs with a sibling .css injected @scope-d into the demo
-// stage, so the source in the editor fully explains its own look. Slides are
-// height:100% so they fill the fixed-height stage.
-
 var carouselDefaultHTML = renderExampleHTML(examples.CarouselDefault())
 
 //go:embed examples/carousel_default.css

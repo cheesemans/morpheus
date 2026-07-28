@@ -24,11 +24,6 @@ func layoutPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// Layout demos source from examples/. <neo-layout> is CSS-only and the
-// demos use only kit pieces (neo-layout, neo-card, neo-badge, neo-button)
-// plus plain HTML. A few demos add a sibling .css scoped into the stage
-// for card flex-basis and scroll padding that has no neo-* attribute.
-
 var layoutOverviewHTML = renderExampleHTML(examples.LayoutOverview())
 
 //go:embed examples/layout_overview.templ
@@ -37,7 +32,6 @@ var layoutOverviewTempl string
 //go:embed examples/layout_overview.css
 var layoutOverviewCSS string
 
-// Playground composition reuses the overview example.
 var layoutCompositionPlaygroundHTML = layoutOverviewHTML
 
 var layoutClusterHTML = renderExampleHTML(examples.LayoutCluster())

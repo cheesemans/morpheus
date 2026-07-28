@@ -17,11 +17,6 @@ func lightboxPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// One self-sufficient templ func per example, rendered to HTML for the
-// playground state and the Examples-section preview, with the templ source
-// embedded for the code tab. Each example keeps its styling in a sibling
-// .css file, embedded for the CSS tab and applied scoped to the preview.
-
 var lightboxDefaultHTML = renderExampleHTML(examples.LightboxDefault())
 
 //go:embed examples/lightbox_default.templ

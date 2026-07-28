@@ -17,9 +17,6 @@ func buttongroupPlaygroundStates() []PlaygroundState {
 //go:embed examples/buttongroup_default.html
 var buttongroupPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Button group page's "Examples" section.
-
 var buttongroupHorizontalHTML = renderExampleHTML(examples.ButtongroupHorizontal())
 
 //go:embed examples/buttongroup_horizontal.templ

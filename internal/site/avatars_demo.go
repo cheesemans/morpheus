@@ -18,10 +18,6 @@ func avatarsPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// collapse-at is the primary editable scalar; bind it so the
-// playground exposes a numeric control via the avatars_collapse_at
-// signal.
-//
 //go:embed examples/avatars_default.html
 var avatarsPlaygroundDefaultHTML string
 
@@ -40,9 +36,6 @@ var avatarsOverflowHTML = renderExampleHTML(examples.AvatarsOverflow())
 //go:embed examples/avatars_overflow.templ
 var avatarsOverflowTempl string
 
-// Self-sufficient: the overflow panel content is spelled out and the
-// panel layout is inlined so the example depends on no site stylesheet
-// classes.
 var avatarsClickableHTML = renderExampleHTML(examples.AvatarsClickable())
 
 //go:embed examples/avatars_clickable.templ

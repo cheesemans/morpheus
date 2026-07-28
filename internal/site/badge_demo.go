@@ -20,12 +20,6 @@ func badgePlaygroundStates() []PlaygroundState {
 //go:embed examples/badge_default.html
 var badgePlaygroundDefaultHTML string
 
-// One self-sufficient HTML const per example, used as BOTH the playground
-// state and the Examples-section render+source (via templ.Raw). No
-// site-local demo classes; example-only styling lives in a sibling .css
-// file (embedded and injected scoped, also shown as the CSS tab source),
-// so the source fully explains its own look.
-
 var badgeVariantsHTML = renderExampleHTML(examples.BadgeVariants())
 
 //go:embed examples/badge_variants.templ

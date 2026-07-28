@@ -20,10 +20,6 @@ func iconPlaygroundStates() []PlaygroundState {
 //go:embed examples/icon_default.html
 var iconPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Icon page's "Examples" section. Each pair shows the markup an author
-// would copy/paste verbatim, with no Datastar wiring, no live params.
-
 var iconGalleryHTML = renderExampleHTML(examples.IconGallery())
 
 //go:embed examples/icon_gallery.templ

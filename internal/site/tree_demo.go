@@ -6,26 +6,15 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Embedded from the same .js modules the page loads at runtime so the
-// "Server script" tabs can't drift.
-
 //go:embed static/sim/tree/loadnode.js
 var treeLoadNodeScript string
 
-// LazyNode is one node of the async-loading tree demo. Branches carry
-// Children; leaves leave it nil. Path uniquely identifies the node.
-// The DOM id is derived from Path and is what the async demo posts
-// back to the simulated server. Fields are exported so the page-local
-// JSONScript can feed the static-site simulator.
 type LazyNode struct {
 	Path     string     `json:"path"`
 	Label    string     `json:"label"`
 	Children []LazyNode `json:"children,omitempty"`
 }
 
-// LazyTreeData is the demo's static tree shape. Two levels of dynamic
-// loading: clicking a root expands it and triggers the first fetch;
-// clicking a sub-branch returned by that fetch triggers the second.
 var LazyTreeData = []LazyNode{
 	{Path: "src", Label: "src", Children: []LazyNode{
 		{Path: "src/components", Label: "components", Children: []LazyNode{
@@ -55,10 +44,6 @@ var LazyTreeData = []LazyNode{
 		{Path: "tests/integration.test.ts", Label: "integration.test.ts"},
 	}},
 }
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Tree page's "Examples" section. The HTML tab is the example's own
-// rendered output; the Templ tab embeds its .templ source verbatim.
 
 var treeFileSystemHTML = renderExampleHTML(examples.TreeFileSystem())
 
@@ -101,9 +86,5 @@ func treePlaygroundStates() []PlaygroundState {
 	}
 }
 
-// treePlaygroundDefaultHTML is a small structural tree. Tree has no
-// scalar host attribute worth binding, so the default state is a plain
-// instance with no data-signals.
-//
 //go:embed examples/tree_default.html
 var treePlaygroundDefaultHTML string

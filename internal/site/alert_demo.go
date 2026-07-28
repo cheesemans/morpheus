@@ -14,9 +14,6 @@ func alertPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// Static-source pairs for the Alert page. Alert is CSS-only, so the
-// examples render directly and their source snippets can stay literal.
-
 //go:embed examples/alert_default.html
 var alertPlaygroundDefaultHTML string
 

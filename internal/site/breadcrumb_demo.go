@@ -18,17 +18,8 @@ func breadcrumbPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// breadcrumb_aria_label drives the host's only scalar attribute; the
-// trail items stay literal markup edited directly in the HTML pane.
-//
 //go:embed examples/breadcrumb_default.html
 var breadcrumbPlaygroundDefaultHTML string
-
-// Single-source pairs for the per-example demos: each examples func
-// drives both the rendered HTML tab and the live preview, and its
-// .templ file is embedded for the Templ tab. The deep / compact
-// variants use neo.BreadcrumbAttrs (typed items list); the others
-// author raw children inside <neo-breadcrumb>.
 
 var breadcrumbDeepHTML = renderExampleHTML(examples.BreadcrumbDeep())
 

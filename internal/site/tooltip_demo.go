@@ -19,14 +19,6 @@ func tooltipPlaygroundStates() []PlaygroundState {
 //go:embed examples/tooltip_default.html
 var tooltipPlaygroundDefaultHTML string
 
-// Per-example demos for the Tooltip page's "Examples" section. Most are
-// templ-sourced: renderExampleHTML drives the live preview and HTML tab,
-// the .templ file is embedded verbatim for the Templ tab.
-//
-// tooltipRichHTML is used as BOTH the playground "Rich content" state and
-// the Examples render + source; its styling lives in the sibling
-// tooltip_rich.css, injected @scope-d into the demo stage.
-
 var tooltipPlacementsHTML = renderExampleHTML(examples.TooltipPlacements())
 
 //go:embed examples/tooltip_placements.templ

@@ -6,15 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Source strings (HTML + Templ) and embedded sim handlers for the
-// Server-driven page's live demos, surfaced in each demo's "Server
-// script" / source tabs. Embedding the same .js modules the page loads
-// at runtime keeps the tabs from drifting.
-
-// Inlined (not <img>-referenced) so strokes inherit currentColor and
-// track --page-fg across light/dark/system theme modes. Muted
-// annotations map to var(--muted); green accents stay literal.
-//
 //go:embed static/action_to_patch.svg
 var actionToPatchDiagram string
 
@@ -26,10 +17,6 @@ var serverDrivenAsyncLoadScript string
 
 //go:embed static/sim/serverdriven/asyncfail.js
 var serverDrivenAsyncFailScript string
-
-// Command patches playground: one popover, three states that each
-// patch its `open` attribute. "No command" omits the attribute, so the
-// morph leaves the popover's current open state untouched.
 
 //go:embed examples/server_driven_command_open.html
 var serverDrivenCommandOpenHTML string

@@ -21,11 +21,6 @@ func tabsPlaygroundStates() []PlaygroundState {
 //go:embed examples/tabs_default.html
 var tabsPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Tabs page's "Examples" section. Each pair shows the markup an
-// author would copy/paste verbatim, with no Datastar wiring, no live
-// params.
-
 var tabsIconsHTML = renderExampleHTML(examples.TabsIcons())
 
 //go:embed examples/tabs_icons.templ
@@ -41,9 +36,6 @@ var tabsCustomAnimationHTML = renderExampleHTML(examples.TabsCustomAnimation())
 //go:embed examples/tabs_custom_animation.templ
 var tabsCustomAnimationTempl string
 
-// The custom-property overrides and descendant rules (incl. the
-// runtime-driven [aria-selected] state, which can't be inlined) live
-// in a sibling .css file keyed to a unique wrapper class.
 var tabsUnderlineHTML = renderExampleHTML(examples.TabsUnderline())
 
 //go:embed examples/tabs_underline.templ

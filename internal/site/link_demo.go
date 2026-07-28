@@ -18,9 +18,6 @@ func linkPlaygroundStates() []PlaygroundState {
 //go:embed examples/link_default.html
 var linkPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Link page's "Examples" section.
-
 var linkVariantsHTML = renderExampleHTML(examples.LinkVariants())
 
 //go:embed examples/link_variants.templ

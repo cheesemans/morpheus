@@ -26,12 +26,6 @@ var kbdPlatformKeysHTML = renderExampleHTML(examples.KbdPlatformKeys())
 //go:embed examples/kbd_platform_keys.templ
 var kbdPlatformKeysTempl string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Kbd page's "Examples" section. Each pair shows the markup an
-// author would copy/paste verbatim, with no Datastar wiring, no live
-// params. The demos these power don't have a live form, so the
-// source isn't trying to track anything dynamic.
-
 var kbdAliasesHTML = renderExampleHTML(examples.KbdAliases())
 
 //go:embed examples/kbd_aliases.templ
@@ -60,11 +54,6 @@ var kbdInputGroupTempl string
 //go:embed examples/kbd_input_group.css
 var kbdInputGroupCSS string
 
-// Self-sufficient shortcut-reference table: the layout (border-collapsed
-// two-column card, label left / accelerator right, borderless last row)
-// lives in a sibling .css injected scoped, so the source fully explains
-// its own look without a site-local class. Used as BOTH the playground
-// state and the Examples-section render+source.
 var kbdShortcutTableHTML = renderExampleHTML(examples.KbdShortcutTable())
 
 //go:embed examples/kbd_shortcut_table.templ

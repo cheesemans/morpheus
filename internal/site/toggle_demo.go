@@ -20,16 +20,10 @@ func togglePlaygroundStates() []PlaygroundState {
 //go:embed examples/toggle_default.html
 var togglePlaygroundDefaultHTML string
 
-// toggleSlotHTML / toggleSlotTempl are the static source for the
-// slot-driven on / off toggle: [data-neo-toggle-off] paints the
-// resting label, [data-neo-toggle-on] the pressed one.
 var toggleSlotHTML = renderExampleHTML(examples.ToggleSlot())
 
 //go:embed examples/toggle_slot.templ
 var toggleSlotTempl string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Toggle page's "Examples" section.
 
 var toggleVariantsHTML = renderExampleHTML(examples.ToggleVariants())
 

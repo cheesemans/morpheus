@@ -6,9 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Single sources for the Boundary page demos. Each demo's HTML is the
-// same string the page renders live and shows in its code tab.
-
 var boundaryScopedDismissHTML = renderExampleHTML(examples.BoundaryScopedDismiss())
 
 //go:embed examples/boundary_scoped_dismiss.templ

@@ -17,16 +17,9 @@ func spinnerPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// Determinate ring whose value is signal-editable through the
-// playground's signal controls.
-//
 //go:embed examples/spinner_playground_default.html
 var spinnerPlaygroundDefaultHTML string
 
-// spinnerMorphStates seeds the "Morphing during interaction" playground.
-// Every state is a bare host. The SVG ring lives in shadow DOM, so a
-// Datastar fat morph only reconciles attributes and determinate values can
-// ease between positions without rebuilding the arc.
 func spinnerMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Indetermined", HTML: spinnerMorphIndeterminateHTML},
@@ -51,12 +44,6 @@ var spinnerMorph70HTML string
 
 //go:embed examples/spinner_morph_100.html
 var spinnerMorph100HTML string
-
-// Single-source pairs for the per-example demos in the Spinner page's
-// "Examples" section: each templ under examples/ drives both the live
-// preview and the rendered-HTML tab, with its .templ embedded verbatim
-// for the Templ tab. The custom element owns its shadow ring, so each
-// example only authors the public host.
 
 var spinnerDefaultHTML = renderExampleHTML(examples.SpinnerDefault())
 
@@ -90,8 +77,6 @@ var spinnerDeterminateTempl string
 //go:embed examples/spinner_determinate.css
 var spinnerDeterminateCSS string
 
-// Tooltip example: the value lives in a wrapping <neo-tooltip>
-// (hover/focus), never painted on the ring.
 var spinnerLabeledHTML = renderExampleHTML(examples.SpinnerLabeled())
 
 //go:embed examples/spinner_labeled.templ
@@ -100,10 +85,6 @@ var spinnerLabeledTempl string
 //go:embed examples/spinner_labeled.css
 var spinnerLabeledCSS string
 
-// The animated example drives `value` from a tiny inline script so the
-// ring visibly progresses; the source pair shows the host markup plus
-// the ticking script verbatim. No tooltip here; a static tooltip text
-// would lag the live value.
 var spinnerAnimatedHTML = renderExampleHTML(examples.SpinnerAnimated())
 
 //go:embed examples/spinner_animated.templ

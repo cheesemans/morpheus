@@ -20,20 +20,9 @@ func sliderRangePlaygroundStates() []PlaygroundState {
 	}
 }
 
-// sliderRangePlaygroundDefaultHTML is the playground's starting state:
-// a representative range whose upper `value-max` attribute is made
-// signal-editable so the playground's signal controls can drive it.
-//
 //go:embed examples/slider_range_default.html
 var sliderRangePlaygroundDefaultHTML string
 
-// sliderRangeMorphStates seeds the "Morphing during interaction"
-// playground. Each state is the bare host; only the `value-min` /
-// `value-max` attributes differ. The painted rail/thumbs/fill live in the
-// component's shadow root, so a plain fat-morph reconciles only the host
-// attributes and the easing transition eases the band to the new values. A
-// light-DOM build would instead rebuild the internals, which snaps; see
-// neo-slider-range.ts.
 func sliderRangeMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Low", HTML: sliderRangeMorphLowHTML},
@@ -50,10 +39,6 @@ var sliderRangeMorphMediumHTML string
 
 //go:embed examples/slider_range_morph_high.html
 var sliderRangeMorphHighHTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Slider range page's "Examples" section. Each pair shows the markup an
-// author would copy/paste verbatim, with no Datastar wiring, no live params.
 
 var sliderRangeDecimalHTML = renderExampleHTML(examples.SliderRangeDecimal())
 

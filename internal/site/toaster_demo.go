@@ -6,9 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Embedded from the same .js modules the page loads at runtime so the
-// "Server script" tabs can't drift.
-
 //go:embed static/sim/toaster/app-shell.js
 var toasterAppShellScript string
 
@@ -34,35 +31,17 @@ func toasterPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// The Default playground state demonstrates a contained toaster driven
-// imperatively: its triggers target the example's own toaster via
-// getElementById, not the page-wide NeoToast singleton. Its CSS caps the
-// contained stack's max-height and gives the host frame the flex layout
-// that anchors the toaster and stacks the triggers at the top.
-//
 //go:embed examples/toaster_default.html
 var toasterPlaygroundDefaultHTML string
 
 //go:embed examples/toaster_default.css
 var toasterPlaygroundDefaultCSS string
 
-// toasterAppShellHTML / toasterAppShellTempl are the static source for
-// the "Triggers the app-shell toaster" example: two buttons that POST
-// to the show / dismiss handlers of the page-level toaster.
 var toasterAppShellHTML = renderExampleHTML(examples.ToasterAppShell())
 
 //go:embed examples/toaster_app_shell.templ
 var toasterAppShellTempl string
 
-// Per-example demos for the Toaster page's "Examples" section. Each
-// shows the markup an author would copy/paste verbatim, with no Datastar
-// simulator wiring; the real-world equivalent of each handler is in the
-// comments above the markup.
-
-// The vanilla "Show a toast" example: a plain click listener invoking
-// the contained toaster's instance show(). Self-sufficient: the host
-// frame is inlined and the handler ships inline, so no Datastar and no
-// site-local classes.
 var toasterVanillaHTML = renderExampleHTML(examples.ToasterVanilla())
 
 //go:embed examples/toaster_vanilla.templ

@@ -17,17 +17,8 @@ func cardPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// Card is structural with no clean scalar attribute to bind, so the
-// Default state is a plain instance carrying every structural slot.
-//
 //go:embed examples/card_default.html
 var cardPlaygroundDefaultHTML string
-
-// One self-sufficient templ func per example, rendered to HTML for the
-// playground state and the Examples-section preview, with the templ
-// source embedded for the code tab. Examples using a site-local demo
-// class keep their styling in a sibling .css file, embedded for the CSS
-// tab and applied scoped to the preview.
 
 var cardVariantsHTML = renderExampleHTML(examples.CardVariants())
 

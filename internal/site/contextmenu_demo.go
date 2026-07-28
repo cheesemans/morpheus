@@ -16,11 +16,6 @@ func contextMenuPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// One self-sufficient templ func per example, rendered to HTML for the
-// playground state and the Examples-section preview, with the templ source
-// embedded for the code tab. Each example keeps its styling in a sibling
-// .css file, embedded for the CSS tab and applied scoped to the preview.
-
 //go:embed examples/context_menu_default.html
 var contextMenuPlaygroundDefaultHTML string
 

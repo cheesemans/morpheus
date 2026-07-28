@@ -5,9 +5,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// selectPlaygroundStates seeds the Select overview playground. Default
-// is a signal-editable single select; the rest reuse the documented
-// examples below.
 func selectPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: selectPlaygroundDefaultHTML},
@@ -21,11 +18,6 @@ func selectPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// selectMorphStates seeds the "Morphing during interaction" playground.
-// Autoplay cycles the states, each a fat-morph of the option list onto
-// the same live <neo-select>: options appear, disappear, and flip to
-// disabled while the element stays mounted (and its dropdown open). The
-// shared root tag is what lets idiomorph keep the element across states.
 func selectMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: selectMorphDefaultHTML},
@@ -43,23 +35,14 @@ var selectMorphMoreHTML string
 //go:embed examples/select_morph_disabled.html
 var selectMorphDisabledHTML string
 
-// selectPlaygroundDefaultHTML is the representative single select. Its
-// `value` is signal-editable through the namespaced `select_value`.
-//
 //go:embed examples/select_default.html
 var selectPlaygroundDefaultHTML string
-
-// Per-demo simulator handlers, embedded from the same .js modules the
-// page loads at runtime so the "Server script" tab can't drift.
 
 //go:embed static/sim/select/lazy.js
 var selectLazyScript string
 
 //go:embed static/sim/select/async-spinner.js
 var selectAsyncSpinnerScript string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Select page's "Examples" section.
 
 var selectDisabledHTML = renderExampleHTML(examples.SelectDisabled())
 

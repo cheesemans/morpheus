@@ -15,12 +15,6 @@ func dialogPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// dialogMorphStates seeds the "Morphing during interaction" playground.
-// Autoplay fat-morphs the dialog body onto the same live <neo-dialog>
-// while it's open. The <neo-dialog>, trigger, and <dialog> wrapper are
-// identical across states, so idiomorph keeps the dialog mounted and
-// open; only the content inside the <neo-elastic> body differs, which
-// animates the dialog's height between the two layouts.
 func dialogMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Initial", HTML: dialogMorphInitialHTML, CSS: dialogMorphCSS},
@@ -35,24 +29,14 @@ var dialogMorphInitialHTML string
 //go:embed examples/dialog_morph_different.html
 var dialogMorphDifferentHTML string
 
-// dialogMorphCSS styles both morph states: the classes are stable across
-// the swap, so only the content inside the body differs.
-//
 //go:embed examples/dialog_morph.css
 var dialogMorphCSS string
 
 //go:embed examples/dialog_default.html
 var dialogPlaygroundDefaultHTML string
 
-// asyncDialogDefaultHTML is the profile body the failure-swap demo morphs
-// in on a successful retry. The async-loading example inlines its own copy
-// in dialog_async_html.
-//
 //go:embed examples/async_dialog_default.html
 var asyncDialogDefaultHTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Dialog page's "Examples" section.
 
 var dialogNonDismissibleHTML = renderExampleHTML(examples.DialogNonDismissible())
 
@@ -75,9 +59,6 @@ var dialogAsyncLoadingTempl string
 //go:embed examples/dialog_async_loading.css
 var dialogAsyncLoadingCSS string
 
-// dialogAsyncFailureTempl is the templ source for the DialogAsync
-// "Async load with failure swap" demo.
-//
 //go:embed examples/dialog_async_failure.templ
 var dialogAsyncFailureTempl string
 

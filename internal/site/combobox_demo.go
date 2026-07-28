@@ -5,9 +5,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Embedded from the same .js modules the page loads at runtime so the
-// "Server script" tabs can't drift.
-
 //go:embed static/sim/combobox/async-load.js
 var comboboxAsyncLoadScript string
 
@@ -20,9 +17,6 @@ var comboboxSearchScript string
 //go:embed static/sim/combobox/lazy-once.js
 var comboboxLazyOnceScript string
 
-// comboboxPlaygroundStates seeds the overview playground. Default first,
-// then one state per documented example reusing the static `*HTML`
-// sources so preview and copyable source stay in lockstep.
 func comboboxPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: comboboxPlaygroundDefaultHTML},
@@ -36,12 +30,6 @@ func comboboxPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// comboboxMorphStates seeds the "Morphing during interaction"
-// playground. Autoplay cycles the states, each one a fat-morph of the
-// option list onto the same live <neo-combobox>: options appear,
-// disappear, and flip to disabled while the element stays mounted (and
-// its popover open). The shared root tag is what lets idiomorph keep the
-// element across states.
 func comboboxMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: comboboxMorphDefaultHTML},
@@ -59,21 +47,8 @@ var comboboxMorphMoreHTML string
 //go:embed examples/combobox_morph_disabled.html
 var comboboxMorphDisabledHTML string
 
-// comboboxPlaygroundDefaultHTML is the overview playground's Default
-// state. The primary editable attribute is `value`, bound to the
-// signal-editable `combobox_value`.
-// data-signals sits on the <neo-combobox> itself, not a wrapper <div>:
-// the playground morphs each state into the preview container, and
-// idiomorph only preserves a node when its tag matches across states.
-// Every other state's root is <neo-combobox>, so a wrapper here would
-// make the Default↔other transitions swap the root tag, tear down the
-// element, and close an open popover.
-//
 //go:embed examples/combobox_default.html
 var comboboxPlaygroundDefaultHTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Combobox page's "Examples" section.
 
 var comboboxDisabledControlHTML = renderExampleHTML(examples.ComboboxDisabledControl())
 

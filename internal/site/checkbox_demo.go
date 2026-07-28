@@ -6,9 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Embedded from the same .js module the page loads at runtime so the
-// "Server script" tab on the tree-with-checkboxes demo can't drift.
-
 //go:embed static/sim/checkbox/tree.js
 var checkboxTreeScript string
 
@@ -28,9 +25,6 @@ var checkboxPlaygroundDefaultHTML string
 
 //go:embed examples/checkbox_default.css
 var checkboxPlaygroundDefaultCSS string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Checkbox page's "Examples" section.
 
 var checkboxStatesHTML = renderExampleHTML(examples.CheckboxStates())
 
@@ -63,8 +57,6 @@ var checkboxWithLabelTempl string
 //go:embed examples/checkbox_with_label.css
 var checkboxWithLabelCSS string
 
-// .pg-checkbox-row's descendant rules (> neo-checkbox, > span > strong,
-// …) can't be inlined, so the whole row layout lives in the sibling .css.
 var checkboxSettingsGroupHTML = renderExampleHTML(examples.CheckboxSettingsGroup())
 
 //go:embed examples/checkbox_settings_group.templ

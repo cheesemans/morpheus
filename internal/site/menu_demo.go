@@ -15,11 +15,6 @@ func menuPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// menuMorphStates seeds the "Morphing during interaction" playground.
-// Autoplay cycles the states, each a fat-morph of the item list onto the
-// same live <neo-menu>: rows appear, disappear, and flip to disabled
-// while the trigger and panel stay mounted (and the menu open). The
-// shared <neo-button> root is what lets idiomorph keep the element.
 func menuMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Initial", HTML: menuMorphInitialHTML},
@@ -37,16 +32,8 @@ var menuMorphDisabledHTML string
 //go:embed examples/menu_morph_more.html
 var menuMorphMoreHTML string
 
-// menuPlaygroundDefaultHTML: a representative trigger + menu with
-// items, separators, and nested submenus.
-//
 //go:embed examples/menu_default.html
 var menuPlaygroundDefaultHTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Menu page's "Examples" section. Each pair shows the markup an
-// author would copy/paste verbatim, with no Datastar wiring, no live
-// params.
 
 var menuDisabledRowsHTML = renderExampleHTML(examples.MenuDisabledRows())
 

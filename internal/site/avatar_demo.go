@@ -14,9 +14,6 @@ func avatarPlaygroundStates() []PlaygroundState {
 	}
 }
 
-// Avatar is a style-only frame with no attribute-driven variants, so
-// the Default state is plain markup with no signal-editable attribute.
-//
 //go:embed examples/avatar_default.html
 var avatarPlaygroundDefaultHTML string
 

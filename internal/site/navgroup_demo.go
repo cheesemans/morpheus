@@ -19,9 +19,6 @@ func navgroupPlaygroundStates() []PlaygroundState {
 //go:embed examples/navgroup_default.html
 var navgroupPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Navgroup page's "Examples" section.
-
 var navgroupToolbarHTML = renderExampleHTML(examples.NavgroupToolbar())
 
 //go:embed examples/navgroup_toolbar.templ

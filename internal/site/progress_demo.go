@@ -21,12 +21,6 @@ func progressPlaygroundStates() []PlaygroundState {
 //go:embed examples/progress_default.html
 var progressPlaygroundDefaultHTML string
 
-// progressMorphStates seeds the "Morphing during interaction" playground.
-// Each state is the bar's prerendered markup (what neo.Progress emits and
-// the host adopt()s), so a plain fat-morph reconciles the existing fill
-// node in place and the easing transition eases it to the new value. A
-// children-less <neo-progress> would instead make the morph rebuild the
-// JS-rendered fill at the new value, which snaps; see neo-progress.ts.
 func progressMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "0%", HTML: progressMorph0HTML},
@@ -43,12 +37,6 @@ var progressMorph30HTML string
 
 //go:embed examples/progress_morph_40.html
 var progressMorph40HTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Progress page's "Examples" section. Each pair shows the markup an
-// author would copy/paste verbatim, with no Datastar wiring, no live
-// params. The demos these power don't have a live form, so the
-// source isn't tracking anything dynamic.
 
 var progressMarksHTML = renderExampleHTML(examples.ProgressMarks())
 
@@ -70,9 +58,6 @@ var progressIndeterminateHTML = renderExampleHTML(examples.ProgressIndeterminate
 //go:embed examples/progress_indeterminate.templ
 var progressIndeterminateTempl string
 
-// Self-contained ping-pong demo. Keyframes and the part/animation
-// override live in the sibling .css, keyed off a unique class, so the
-// example works without any site-local CSS rule.
 var progressPingPongHTML = renderExampleHTML(examples.ProgressPingPong())
 
 //go:embed examples/progress_ping_pong.templ

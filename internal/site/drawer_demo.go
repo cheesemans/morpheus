@@ -20,15 +20,8 @@ func drawerPlaygroundStates() []PlaygroundState {
 //go:embed examples/drawer_default.html
 var drawerPlaygroundDefaultHTML string
 
-// asyncDrawerDefaultHTML is the profile body the failure-swap demo morphs
-// in on a successful retry. The async-loading example inlines its own copy
-// in drawer_async_html.
-//
 //go:embed examples/async_drawer_default.html
 var asyncDrawerDefaultHTML string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Drawer page's "Examples" section.
 
 var drawerSidesHTML = renderExampleHTML(examples.DrawerSides())
 
@@ -66,8 +59,6 @@ var drawerFromDialogHTML = renderExampleHTML(examples.DrawerFromDialog())
 //go:embed examples/drawer_from_dialog.templ
 var drawerFromDialogTempl string
 
-// drawerScrollingBodyPlaygroundHTML is the full "Scrolling body" drawer
-// with all 30 real rows, matching the copyable source.
 var drawerScrollingBodyPlaygroundHTML = renderExampleHTML(examples.DrawerScrollingBodyPlayground())
 
 var drawerAsyncLoadingHTML = renderExampleHTML(examples.DrawerAsyncLoading())

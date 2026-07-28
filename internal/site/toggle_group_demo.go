@@ -18,11 +18,6 @@ func toggleGroupPlaygroundStates() []PlaygroundState {
 //go:embed examples/toggle_group_default.html
 var toggleGroupPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in
-// the Toggle group page's "Examples" section. Each pair shows the
-// markup an author would copy/paste verbatim, with no Datastar wiring,
-// no live params.
-
 var toggleGroupFormattingHTML = renderExampleHTML(examples.ToggleGroupFormatting())
 
 //go:embed examples/toggle_group_formatting.templ

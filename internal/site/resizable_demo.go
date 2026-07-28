@@ -19,18 +19,11 @@ func resizablePlaygroundStates() []PlaygroundState {
 	}
 }
 
-// resizableStateDefaultHTML binds the initial width to an editable signal.
-//
 //go:embed examples/resizable_state_default.html
 var resizableStateDefaultHTML string
 
 //go:embed examples/resizable_state_default.css
 var resizableStateDefaultCSS string
-
-// Self-sufficient per-example markup for the Resizable page's "Examples"
-// section and the matching playground states. Each is one templ function
-// under examples/, rendered for both the live preview and the HTML tab;
-// the .templ file is embedded verbatim for the Templ tab.
 
 var resizableCornerHTML = renderExampleHTML(examples.ResizableCorner())
 
@@ -80,9 +73,6 @@ var resizableStepTempl string
 //go:embed examples/resizable_step.css
 var resizableStepCSS string
 
-// Custom-icon example: the author-supplied glyph sits where the default
-// lucide icon would; the sibling .css only restyles its glyph size, not
-// its positioning.
 var resizableCustomIconHTML = renderExampleHTML(examples.ResizableCustomIcon())
 
 //go:embed examples/resizable_custom_icon.templ

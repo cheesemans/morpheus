@@ -20,11 +20,6 @@ func colorFieldPlaygroundStates() []PlaygroundState {
 //go:embed examples/color_field_default.html
 var colorFieldPlaygroundDefaultHTML string
 
-// colorFieldMorphStates seeds the "Morphing during interaction"
-// playground. Autoplay fat-morphs attributes onto the same live
-// <neo-color-field>: the value flips to a different hue, then the host
-// flips to disabled while the element stays mounted. The shared root tag
-// keeps idiomorph from tearing the element down across states.
 func colorFieldMorphStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Initial", HTML: colorFieldMorphInitialHTML, CSS: colorFieldMorphCSS},
@@ -44,14 +39,8 @@ var colorFieldMorphColorHTML string
 //go:embed examples/color_field_morph_disabled.html
 var colorFieldMorphDisabledHTML string
 
-// colorFieldMorphCSS styles all three morph states; only the swatch's
-// background stays inline, since that is the bound value.
-//
 //go:embed examples/color_field_morph.css
 var colorFieldMorphCSS string
-
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Color field page's "Examples" section.
 
 var colorFieldDerivedHueHTML = renderExampleHTML(examples.ColorFieldDerivedHue())
 

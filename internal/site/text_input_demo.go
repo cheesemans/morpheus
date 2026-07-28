@@ -22,11 +22,6 @@ func textInputPlaygroundStates() []PlaygroundState {
 //go:embed examples/text_input_default.html
 var textInputPlaygroundDefaultHTML string
 
-// Static-source pairs (HTML + Templ) for the per-example demos in the
-// Input page's "Examples" section. Each pair shows the verbatim markup
-// an author would copy/paste, with no Datastar wiring, no live-param
-// signals.
-
 var textInputCardMaskHTML = renderExampleHTML(examples.TextInputCardMask())
 
 //go:embed examples/text_input_card_mask.templ
@@ -62,11 +57,6 @@ var textInputDisabledHTML = renderExampleHTML(examples.TextInputDisabled())
 //go:embed examples/text_input_disabled.templ
 var textInputDisabledTempl string
 
-// Datastar "Autocomplete" example: the field's own value stays free
-// text; the server morphs <neo-option> rows into the suggestions slot.
-// The .js handler is embedded so the demo's "Server script" tab can't
-// drift from the module the page loads at runtime.
-
 var textInputAutocompleteHTML = renderExampleHTML(examples.TextInputAutocomplete())
 
 //go:embed examples/text_input_autocomplete.templ
@@ -78,11 +68,6 @@ var textInputAutocompleteCSS string
 //go:embed static/sim/textinput/suggest.js
 var textInputSuggestScript string
 
-// textInputSuggestStates seeds the "Suggestion states" playground. Each
-// state is a fat-morph of the suggestions slot onto the same live
-// <neo-textinput>: empty, plain rows, some disabled, then rich rows. The
-// `open` attribute forces the popover open so each state is visible
-// without focusing the preview.
 func textInputSuggestStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Initial", HTML: textInputSuggestInitialHTML},
@@ -108,8 +93,5 @@ var textInputSuggestRichHTML string
 //go:embed examples/text_input_suggest_empty.html
 var textInputSuggestEmptyHTML string
 
-// textInputSuggestRichCSS styles the rich rows: the same three-part row
-// repeats for every option.
-//
 //go:embed examples/text_input_suggest_rich.css
 var textInputSuggestRichCSS string

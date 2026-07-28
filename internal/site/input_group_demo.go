@@ -6,14 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// One templ source per example under examples/, driving both the live
-// preview (rendered HTML) and the Templ source tab.
-
-// inputGroupPlaygroundStates seeds the playground with the editable
-// Default state plus a curated set of the page's static examples. Only
-// self-contained examples are reused so each state's CSS tab is the full
-// source (the range/comparison/domain demos lean on global classes in
-// style.css and would show an empty CSS tab).
 func inputGroupPlaygroundStates() []PlaygroundState {
 	return []PlaygroundState{
 		{Label: "Default", HTML: inputGroupDefaultHTML, CSS: inputGroupDefaultCSS},

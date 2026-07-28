@@ -23,10 +23,6 @@ func paginationPlaygroundStates() []PlaygroundState {
 //go:embed examples/pagination_default.html
 var paginationPlaygroundDefaultHTML string
 
-// Per-example demos in the "Examples" section: each is single-sourced from
-// its examples/*.templ file. The HTML tab is the rendered component, the
-// Templ tab is that file embedded as-is.
-
 //go:embed examples/pagination_sibling.templ
 var paginationSiblingTempl string
 
