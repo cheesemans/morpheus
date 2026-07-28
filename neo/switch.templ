@@ -17,8 +17,8 @@ templ Switch(opts SwitchOpts) {
 templ SwitchAttrs(opts SwitchOpts, attrs templ.Attributes) {
 	<neo-switch
 		role="switch"
+		{ opts.Checked.Attrs("checked")... }
 		if opts.Checked.Or(false) {
-			checked
 			aria-checked="true"
 		} else {
 			aria-checked="false"

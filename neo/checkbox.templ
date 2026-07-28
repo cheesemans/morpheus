@@ -22,15 +22,15 @@ templ Checkbox(opts CheckboxOpts) {
 templ CheckboxAttrs(opts CheckboxOpts, attrs templ.Attributes) {
 	<neo-checkbox
 		role="checkbox"
+		{ opts.Indeterminate.Attrs("indeterminate")... }
+		{ opts.Checked.Attrs("checked")... }
 		if opts.Indeterminate.Or(false) {
-			indeterminate
 			aria-checked="mixed"
 		}
-		else
-		if opts.Checked.Or(false) {
-			checked
+		if !opts.Indeterminate.Or(false) && opts.Checked.Or(false) {
 			aria-checked="true"
-		} else {
+		}
+		if !opts.Indeterminate.Or(false) && !opts.Checked.Or(false) {
 			aria-checked="false"
 		}
 		if opts.Disabled.Or(false) {

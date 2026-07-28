@@ -38,12 +38,12 @@ templ RatingAttrs(opts RatingOpts, attrs templ.Attributes) {
 			aria-disabled="true"
 			tabindex="-1"
 		}
-		else
-		if opts.Readonly.Or(false) {
+		if !opts.Disabled.Or(false) && opts.Readonly.Or(false) {
 			readonly
 			aria-readonly="true"
 			tabindex="-1"
-		} else {
+		}
+		if !opts.Disabled.Or(false) && !opts.Readonly.Or(false) {
 			tabindex="0"
 		}
 		{ attrs... }

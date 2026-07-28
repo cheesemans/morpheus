@@ -105,8 +105,12 @@ func ToggleAttrs(opts ToggleOpts, attrs templ.Attributes) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, opts.Pressed.Attrs("pressed"))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		if opts.Pressed.Or(false) {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " pressed aria-pressed=\"true\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " aria-pressed=\"true\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

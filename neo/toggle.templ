@@ -34,8 +34,8 @@ templ Toggle(opts ToggleOpts) {
 templ ToggleAttrs(opts ToggleOpts, attrs templ.Attributes) {
 	<neo-toggle
 		role="button"
+		{ opts.Pressed.Attrs("pressed")... }
 		if opts.Pressed.Or(false) {
-			pressed
 			aria-pressed="true"
 		} else {
 			aria-pressed="false"
