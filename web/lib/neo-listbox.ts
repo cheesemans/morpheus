@@ -72,9 +72,7 @@ export function wireOptionEl(el: HTMLElement, opt: OptionData, roving: boolean) 
 	if (roving && !el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
 	if (!el.hasAttribute("aria-selected")) el.setAttribute("aria-selected", "false");
 	if (opt.disabled) setAttrIfChanged(el, "aria-disabled", "true");
-	else if (!el.hasAttribute("disabled") && el.hasAttribute("aria-disabled")) {
-		el.removeAttribute("aria-disabled");
-	}
+	else el.removeAttribute("aria-disabled");
 }
 
 // Light-DOM attributes a control reconciles when an option set changes in place
