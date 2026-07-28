@@ -88,23 +88,23 @@ neo-spinner [data-neo-spinner-sun] {
 /* Scope the :root-set --neo-spinner-sun-display token to indeterminate
  * mode, else a determinate spinner shows the sun over its arc. */
 neo-spinner:not([value]) [data-neo-spinner-sun],
-neo-spinner[indeterminate] [data-neo-spinner-sun] {
+neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-sun] {
 	display: var(--neo-spinner-sun-display, none);
 }
 
 /* Determinate: arc tweens to value via stroke-dashoffset. */
-neo-spinner[value]:not([indeterminate]) [data-neo-spinner-arc] {
+neo-spinner[value]:not([indeterminate]:where(:not([indeterminate="false"]))) [data-neo-spinner-arc] {
 	transition: stroke-dashoffset var(--neo-spinner-manual-arc-transition, var(--neo-spinner-arc-transition, 0s linear));
 }
 
 /* Indeterminate: hide the track ring, rotate the partial arc. */
 neo-spinner:not([value]) [data-neo-spinner-track],
-neo-spinner[indeterminate] [data-neo-spinner-track] {
+neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-track] {
 	display: none;
 }
 
 neo-spinner:not([value]) [data-neo-spinner-arc],
-neo-spinner[indeterminate] [data-neo-spinner-arc] {
+neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-arc] {
 	display: var(--neo-spinner-indeterminate-arc-display, inline);
 }
 
@@ -112,7 +112,7 @@ neo-spinner[indeterminate] [data-neo-spinner-arc] {
  * HTML element rasters the ring once and spins the layer on the GPU, whereas the
  * same animation on an inner SVG element repaints it every frame. */
 neo-spinner:not([value]) [data-neo-spinner-spin],
-neo-spinner[indeterminate] [data-neo-spinner-spin] {
+neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-spin] {
 	animation: var(--neo-spinner-indeterminate-animation, neo-spinner-spin var(--neo-spinner-duration) linear infinite);
 }
 
@@ -130,18 +130,18 @@ neo-spinner[indeterminate] [data-neo-spinner-spin] {
 	 * would otherwise look like). Determinate: keep the arc but drop
 	 * the commit tween so values jump rather than sweep. */
 	neo-spinner:not([value]) [data-neo-spinner-spin],
-	neo-spinner[indeterminate] [data-neo-spinner-spin] {
+	neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-spin] {
 		animation: none;
 	}
 	neo-spinner:not([value]) [data-neo-spinner-arc],
-	neo-spinner[indeterminate] [data-neo-spinner-arc] {
+	neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-arc] {
 		display: none;
 	}
 	neo-spinner:not([value]) [data-neo-spinner-sun],
-	neo-spinner[indeterminate] [data-neo-spinner-sun] {
+	neo-spinner[indeterminate]:where(:not([indeterminate="false"])) [data-neo-spinner-sun] {
 		display: inline;
 	}
-	neo-spinner[value]:not([indeterminate]) [data-neo-spinner-arc] {
+	neo-spinner[value]:not([indeterminate]:where(:not([indeterminate="false"]))) [data-neo-spinner-arc] {
 		transition: none;
 	}
 }

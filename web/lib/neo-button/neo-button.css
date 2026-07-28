@@ -83,8 +83,8 @@
  * LinkVariantButton* opt-in. The link's "default" value (anchor) is
  * intentionally absent: it falls through to the anchor block below. */
 neo-button:not([variant="anchor"]),
-a[data-neo-link]:not([variant]),
-a[data-neo-link]:not([variant="default"]) {
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant="default"]) {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -119,8 +119,8 @@ a[data-neo-link]:not([variant="default"]) {
 }
 
 neo-button:not([variant="anchor"]),
-a[data-neo-link]:not([variant]),
-a[data-neo-link]:not([variant="default"]) {
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant="default"]) {
 	&:hover {
 		background: var(--neo-button-hover-bg);
 		box-shadow: var(--neo-button-hover-shadow);
@@ -158,7 +158,7 @@ neo-button[aria-expanded="true"] {
 }
 
 neo-button,
-a[data-neo-link] {
+a[data-neo-link]:where(:not([data-neo-link="false"])) {
 	&:focus-visible {
 		outline: 2px solid var(--neo-button-focus-ring);
 		outline-offset: 2px;
@@ -169,7 +169,7 @@ a[data-neo-link] {
  * button-styled link (`button-` prefixed value). Each rule lists only the
  * live selector for each element; the other pairing never occurs. */
 neo-button[variant="primary"],
-a[data-neo-link][variant="button-primary"] {
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="button-primary"] {
 	background: var(--neo-button-primary-bg);
 	color: var(--neo-button-primary-color);
 	border-color: transparent;
@@ -184,7 +184,7 @@ a[data-neo-link][variant="button-primary"] {
 	}
 }
 neo-button[variant="secondary"],
-a[data-neo-link][variant="button-secondary"] {
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="button-secondary"] {
 	background: var(--neo-button-secondary-bg);
 	color: var(--neo-button-secondary-color);
 	border-color: transparent;
@@ -197,7 +197,7 @@ a[data-neo-link][variant="button-secondary"] {
 	}
 }
 neo-button[variant="ghost"],
-a[data-neo-link][variant="button-ghost"] {
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="button-ghost"] {
 	background: var(--neo-button-ghost-bg);
 	color: var(--neo-button-ghost-color);
 	border-color: transparent;
@@ -217,7 +217,7 @@ a[data-neo-link][variant="button-ghost"] {
 	}
 }
 neo-button[variant="danger"],
-a[data-neo-link][variant="button-danger"] {
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="button-danger"] {
 	background: var(--neo-button-danger-bg);
 	color: var(--neo-button-danger-color);
 	border-color: transparent;
@@ -238,8 +238,8 @@ a[data-neo-link][variant="button-danger"] {
  * at 45% currentColor so it reads as "underlined text" rather than
  * "boxed text", then fills to currentColor on hover. */
 neo-button[variant="anchor"],
-a[data-neo-link]:not([variant]),
-a[data-neo-link][variant="default"] {
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="default"] {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -259,8 +259,8 @@ a[data-neo-link][variant="default"] {
 }
 
 neo-button[variant="anchor"],
-a[data-neo-link]:not([variant]),
-a[data-neo-link][variant="default"] {
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="default"] {
 	&:hover,
 	&:focus-visible {
 		background: transparent;
@@ -271,8 +271,8 @@ a[data-neo-link][variant="default"] {
 
 /* :visited only matches the real anchor; the button selector is kept
  * out of the list so we don't queue an unmatchable cascade entry. */
-a[data-neo-link]:not([variant]),
-a[data-neo-link][variant="default"] {
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="default"] {
 	&:visited {
 		color: var(--link-visited, var(--link, var(--accent, currentColor)));
 	}
@@ -281,15 +281,15 @@ a[data-neo-link][variant="default"] {
 /* Let the OS own link colour in forced-colors / high-contrast mode. */
 @media (forced-colors: active) {
 	neo-button[variant="anchor"],
-	a[data-neo-link]:not([variant]),
-	a[data-neo-link][variant="default"] {
+	a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+	a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="default"] {
 		color: LinkText;
 		text-decoration-color: LinkText;
 	}
 }
 
 neo-button,
-a[data-neo-link] {
+a[data-neo-link]:where(:not([data-neo-link="false"])) {
 	&[disabled]:not([disabled="false"]),
 	&[aria-disabled="true"] {
 		cursor: not-allowed;
@@ -303,8 +303,8 @@ a[data-neo-link] {
  * text. Opacity + cursor are enough to convey "disabled" for an
  * underlined word in prose. */
 neo-button[variant="anchor"],
-a[data-neo-link]:not([variant]),
-a[data-neo-link][variant="default"] {
+a[data-neo-link]:where(:not([data-neo-link="false"])):not([variant]),
+a[data-neo-link]:where(:not([data-neo-link="false"]))[variant="default"] {
 	&[disabled]:not([disabled="false"]),
 	&[aria-disabled="true"] {
 		background-image: none;

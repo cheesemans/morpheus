@@ -144,7 +144,7 @@ input:where(
 	[type="month"],
 	[type="week"],
 	[type="time"]
-)[readonly] {
+)[readonly]:where(:not([readonly="false"])) {
 	opacity: 0.75;
 }
 

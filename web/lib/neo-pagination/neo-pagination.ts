@@ -96,7 +96,7 @@ export class NeoPagination extends HTMLElement {
 		else if (this.#focusedKey === "next") sel = "[data-neo-pagination-next]";
 		else sel = `[data-neo-pagination-page="${this.#focusedKey.slice(5)}"]`;
 		const el = this.querySelector<HTMLElement>(sel);
-		if (!el || el.hasAttribute("disabled")) {
+		if (!el || boolAttr(el, "disabled", false)) {
 			this.#focusedKey = null;
 			return;
 		}

@@ -41,7 +41,7 @@ neo-lightbox {
 
 /* Contained: the host is the positioned containing block the absolute
  * overlay fills, and clips the backdrop to the host's box. */
-neo-lightbox[contained] {
+neo-lightbox[contained]:where(:not([contained="false"])) {
 	display: block;
 	position: relative;
 	overflow: clip;

@@ -52,7 +52,7 @@ CAROUSEL_TEMPLATE.innerHTML = `
     gap: var(--neo-carousel-dot-gap, 0.4rem);
     padding: 0.5rem 0;
   }
-  :host(:not([dots])) [data-neo-carousel-dots],
+  :host(:not([dots]:where(:not([dots="false"])))) [data-neo-carousel-dots],
   :host([dots="false"]) [data-neo-carousel-dots] { display: none; }
   [data-neo-carousel-dots] > button {
     width: var(--neo-carousel-dot-size, 0.55rem);
@@ -735,7 +735,7 @@ export class NeoCarousel extends HTMLElement {
 	}
 
 	#isControlDisabled(el: HTMLElement) {
-		return el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true";
+		return boolAttr(el, "disabled", false) || el.getAttribute("aria-disabled") === "true";
 	}
 
 	#canScroll(direction: -1 | 1) {

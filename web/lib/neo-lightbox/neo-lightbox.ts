@@ -89,7 +89,7 @@ LIGHTBOX_SHADOW_TEMPLATE.innerHTML = `
 <style>
   :host { display: inline-block; }
   :host([hidden]) { display: none; }
-  :host([contained]) {
+  :host([contained]:where(:not([contained="false"]))) {
     display: block;
     position: relative;
     overflow: clip;
@@ -122,13 +122,13 @@ LIGHTBOX_SHADOW_TEMPLATE.innerHTML = `
     display: flex;
   }
 
-  :host([contained]) [data-neo-lightbox-overlay] {
+  :host([contained]:where(:not([contained="false"]))) [data-neo-lightbox-overlay] {
     position: absolute;
     inset: 0;
     z-index: var(--neo-lightbox-z-index, 50);
     transition: display var(--neo-lightbox-enter-duration, calc(200ms * var(--neo-duration-scale, 1))) allow-discrete;
   }
-  :host([contained][open]) [data-neo-lightbox-overlay] {
+  :host([contained]:where(:not([contained="false"]))[open]) [data-neo-lightbox-overlay] {
     display: flex;
   }
 
@@ -155,7 +155,7 @@ LIGHTBOX_SHADOW_TEMPLATE.innerHTML = `
     opacity: 1;
     transform: none;
   }
-  :host([contained]) [data-neo-lightbox-surface] {
+  :host([contained]:where(:not([contained="false"]))) [data-neo-lightbox-surface] {
     max-width: 100%;
     max-height: 100%;
   }
@@ -166,12 +166,12 @@ LIGHTBOX_SHADOW_TEMPLATE.innerHTML = `
   }
 
   [data-neo-lightbox-overlay]:popover-open [data-neo-lightbox-backdrop],
-  :host([contained][open]) [data-neo-lightbox-backdrop] {
+  :host([contained]:where(:not([contained="false"]))[open]) [data-neo-lightbox-backdrop] {
     opacity: 1;
   }
   @starting-style {
     [data-neo-lightbox-overlay]:popover-open [data-neo-lightbox-backdrop],
-    :host([contained][open]) [data-neo-lightbox-backdrop] {
+    :host([contained]:where(:not([contained="false"]))[open]) [data-neo-lightbox-backdrop] {
       opacity: 0;
     }
   }
@@ -184,13 +184,13 @@ LIGHTBOX_SHADOW_TEMPLATE.innerHTML = `
       transform var(--neo-lightbox-enter-duration, calc(200ms * var(--neo-duration-scale, 1))) var(--neo-easing, ease-out);
   }
   :host([transition="fade"]) [data-neo-lightbox-overlay]:popover-open [data-neo-lightbox-surface],
-  :host([transition="fade"][contained][open]) [data-neo-lightbox-surface] {
+  :host([transition="fade"][contained]:where(:not([contained="false"]))[open]) [data-neo-lightbox-surface] {
     opacity: 1;
     transform: none;
   }
   @starting-style {
     :host([transition="fade"]) [data-neo-lightbox-overlay]:popover-open [data-neo-lightbox-surface],
-    :host([transition="fade"][contained][open]) [data-neo-lightbox-surface] {
+    :host([transition="fade"][contained]:where(:not([contained="false"]))[open]) [data-neo-lightbox-surface] {
       opacity: 0;
       transform: scale(var(--neo-lightbox-enter-scale, 0.94));
     }

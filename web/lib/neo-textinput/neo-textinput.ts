@@ -906,7 +906,7 @@ export class NeoTextInput extends HTMLElement {
 
 	#rebuildFormatter() {
 		const prefix = this.getAttribute(ATTR_PREFIX) ?? "";
-		const numericOnly = this.hasAttribute(ATTR_NUMERIC_ONLY);
+		const numericOnly = boolAttr(this, ATTR_NUMERIC_ONLY, false);
 
 		const fmt = this.getAttribute(ATTR_FORMAT);
 		if (fmt === "number") {
@@ -988,7 +988,7 @@ export class NeoTextInput extends HTMLElement {
 		// thousands separators are presentation, never part of the
 		// number a form should receive. For other formats, submit-raw
 		// is opt-in.
-		const submitRaw = this.hasAttribute(ATTR_SUBMIT_RAW) || this.#formatter instanceof NumberFormatter;
+		const submitRaw = boolAttr(this, ATTR_SUBMIT_RAW, false) || this.#formatter instanceof NumberFormatter;
 		const v = submitRaw ? this.rawValue : this.#innerInput.value;
 		this.#internals.setFormValue(v);
 	}

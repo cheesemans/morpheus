@@ -75,18 +75,18 @@ neo-checkbox::before {
 }
 
 neo-checkbox[checked],
-neo-checkbox[indeterminate] {
+neo-checkbox[indeterminate]:where(:not([indeterminate="false"])) {
 	background: var(--neo-checkbox-checked-bg);
 	border-color: var(--neo-checkbox-checked-border);
 }
 
 neo-checkbox[checked]::before,
-neo-checkbox[indeterminate]::before {
+neo-checkbox[indeterminate]:where(:not([indeterminate="false"]))::before {
 	transform: scale(1);
 	opacity: 1;
 }
 
-neo-checkbox[indeterminate]::before {
+neo-checkbox[indeterminate]:where(:not([indeterminate="false"]))::before {
 	mask-image: var(--neo-checkbox-mark-indeterminate);
 	-webkit-mask-image: var(--neo-checkbox-mark-indeterminate);
 }
@@ -119,7 +119,7 @@ neo-checkbox[size="sm"] {
 		forced-color-adjust: none;
 	}
 	neo-checkbox[checked],
-	neo-checkbox[indeterminate] {
+	neo-checkbox[indeterminate]:where(:not([indeterminate="false"])) {
 		background: Highlight;
 		border-color: Highlight;
 	}

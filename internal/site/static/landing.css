@@ -1174,7 +1174,7 @@ neo-sidebar.landing-a11y-demo-nav:not(:defined) {
 	align-items: center;
 	gap: 0.85rem;
 
-	& a[data-neo-link] {
+	& a[data-neo-link]:where(:not([data-neo-link="false"])) {
 		width: 2rem;
 		height: 2rem;
 		border-radius: 999px;

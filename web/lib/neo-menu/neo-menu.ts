@@ -361,7 +361,7 @@ export class NeoMenu extends HTMLElement {
 		if (!this.panel) return;
 		this.#items = Array.from(this.panel.querySelectorAll<HTMLElement>(ITEM_SELECTOR))
 			.filter((el) => el.parentElement === this.panel)
-			.filter((el) => !el.hasAttribute("disabled"));
+			.filter((el) => !boolAttr(el, "disabled", false));
 		this.#setRovingTabindex(this.#items[0]);
 	}
 

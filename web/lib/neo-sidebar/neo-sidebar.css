@@ -312,11 +312,11 @@ neo-sidebar > [data-neo-sidebar-minimized] {
 }
 
 /* Two parallel triggers for the always-overlay styling:
- *   • [overlay]        : author intent ("always overlay regardless
+ *   • [overlay]:where(:not([overlay="false"]))        : author intent ("always overlay regardless
  *     of width"). Stable, set in markup, so it also holds before
  *     the element upgrades.
  *   • :state(overlay)  : JS-driven, set by the component while the
- *     author pinned `[overlay]` OR the parent's width sits at/below
+ *     author pinned `[overlay]:where(:not([overlay="false"]))` OR the parent's width sits at/below
  *     this instance's `overlay-breakpoint` (default 50rem). Lets
  *     two sidebars on the same page disagree about the threshold;
  *     the @media / @container queries above can't read per-instance

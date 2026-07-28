@@ -23,7 +23,7 @@
 	--neo-carousel-dot-bg: color-mix(in srgb, var(--page-fg) 25%, transparent);
 	--neo-carousel-dot-active-bg: var(--accent, currentColor);
 	--neo-carousel-dot-radius: 999px;
-	/* Set to 1 to disable [highlight-active] dimming. */
+	/* Set to 1 to disable [highlight-active]:where(:not([highlight-active="false"])) dimming. */
 	--neo-carousel-slide-inactive-opacity: 0.55;
 	--neo-carousel-slide-transition: 200ms var(--neo-easing, ease-out);
 }
@@ -129,22 +129,22 @@ neo-carousel[touch="false"] neo-carousel-track {
 	touch-action: none;
 }
 
-neo-carousel[click-nav] > neo-carousel-track > neo-carousel-slide {
+neo-carousel[click-nav]:where(:not([click-nav="false"])) > neo-carousel-track > neo-carousel-slide {
 	cursor: pointer;
 }
 
 /* `user-select: none` stops a drag-to-scroll gesture from also
  * starting a text selection. */
-neo-carousel[drag-nav] > neo-carousel-track {
+neo-carousel[drag-nav]:where(:not([drag-nav="false"])) > neo-carousel-track {
 	cursor: grab;
 	user-select: none;
 	-webkit-user-select: none;
 }
-neo-carousel[drag-nav] > neo-carousel-track:active {
+neo-carousel[drag-nav]:where(:not([drag-nav="false"])) > neo-carousel-track:active {
 	cursor: grabbing;
 }
 
-/* biome-ignore lint/style/noDescendingSpecificity: base sets display/min-width/flex; the higher-specificity neo-carousel[click-nav] slide rule sets cursor; disjoint, no conflict */
+/* biome-ignore lint/style/noDescendingSpecificity: base sets display/min-width/flex; the higher-specificity neo-carousel[click-nav]:where(:not([click-nav="false"])) slide rule sets cursor; disjoint, no conflict */
 neo-carousel-slide {
 	display: block;
 	min-width: 0;
@@ -153,27 +153,29 @@ neo-carousel-slide {
 		calc((100% - (var(--neo-carousel-per-view) - 1) * var(--neo-carousel-spacing)) / var(--neo-carousel-per-view));
 }
 
-/* Opt-in via [highlight-active]; styles every slide visibility state
+/* Opt-in via [highlight-active]:where(:not([highlight-active="false"])); styles every slide visibility state
  * via the same `data-neo-carousel-slide-visibility` marker the kit
  * writes on every slide. Off-screen (attribute absent) → dimmed;
  * "partial" / "full" → fade up to fully opaque so any visible card
  * reads as active. */
-neo-carousel[highlight-active] > neo-carousel-track > neo-carousel-slide {
+neo-carousel[highlight-active]:where(:not([highlight-active="false"])) > neo-carousel-track > neo-carousel-slide {
 	opacity: var(--neo-carousel-slide-inactive-opacity);
 	transition: opacity var(--neo-carousel-slide-transition);
 }
 
-neo-carousel[highlight-active] > neo-carousel-track > neo-carousel-slide[data-neo-carousel-slide-visibility] {
+neo-carousel[highlight-active]:where(:not([highlight-active="false"]))
+	> neo-carousel-track
+	> neo-carousel-slide[data-neo-carousel-slide-visibility] {
 	opacity: 1;
 }
 
-/* biome-ignore lint/style/noDescendingSpecificity: sets flex; the higher-specificity neo-carousel[click-nav] slide rule sets cursor; disjoint, no conflict */
+/* biome-ignore lint/style/noDescendingSpecificity: sets flex; the higher-specificity neo-carousel[click-nav]:where(:not([click-nav="false"])) slide rule sets cursor; disjoint, no conflict */
 neo-carousel[per-view="auto"] neo-carousel-slide {
 	flex: 0 0 auto;
 }
 
 /* flex-basis becomes the cross-axis size once flex-direction flips. */
-/* biome-ignore lint/style/noDescendingSpecificity: sets width/flex; the higher-specificity neo-carousel[click-nav] slide rule sets cursor; disjoint, no conflict */
+/* biome-ignore lint/style/noDescendingSpecificity: sets width/flex; the higher-specificity neo-carousel[click-nav]:where(:not([click-nav="false"])) slide rule sets cursor; disjoint, no conflict */
 neo-carousel[orientation="vertical"] neo-carousel-slide {
 	width: 100%;
 	flex: 0 0
@@ -187,7 +189,7 @@ neo-carousel[orientation="vertical"] neo-carousel-slide {
 	neo-carousel-track {
 		scroll-behavior: auto;
 	}
-	neo-carousel[highlight-active] > neo-carousel-track > neo-carousel-slide {
+	neo-carousel[highlight-active]:where(:not([highlight-active="false"])) > neo-carousel-track > neo-carousel-slide {
 		transition: none;
 	}
 }
@@ -197,7 +199,10 @@ neo-carousel[orientation="vertical"] neo-carousel-slide {
 :root[data-pref-reduced-motion] neo-carousel-track {
 	scroll-behavior: auto;
 }
-:root[data-pref-reduced-motion] neo-carousel[highlight-active] > neo-carousel-track > neo-carousel-slide {
+:root[data-pref-reduced-motion]
+	neo-carousel[highlight-active]:where(:not([highlight-active="false"]))
+	> neo-carousel-track
+	> neo-carousel-slide {
 	transition: none;
 }
 

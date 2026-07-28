@@ -1,6 +1,8 @@
 // The inner input's :focus-visible outline is suppressed in CSS; the
 // group paints one ring around the whole composed control via :focus-within.
 
+import { boolAttr } from "../command";
+
 const PASSIVE_ADDON_SELECTOR = "neo-input-group > :is(span, neo-kbd, neo-kbd-group, neo-icon)";
 
 const INPUT_SELECTOR = ":scope > neo-textinput, :scope > input";
@@ -59,7 +61,7 @@ export class NeoInputGroup extends HTMLElement {
 
 	#syncDisabled = () => {
 		const inner = this.#findInput();
-		const dis = !!inner && (inner.hasAttribute("disabled") || inner.getAttribute("aria-disabled") === "true");
+		const dis = !!inner && (boolAttr(inner, "disabled", false) || inner.getAttribute("aria-disabled") === "true");
 		// Skip no-op writes: even with the target filter, a redundant
 		// setAttribute would log a mutation we'd then have to discard.
 		const cur = this.getAttribute("aria-disabled");

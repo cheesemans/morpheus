@@ -367,7 +367,7 @@ code {
  * specificity than .app-nav-link alone. Match that specificity (and win
  * on source order, style.css after morpheus.css) to left-align the
  * label for the vertical sidebar list. */
-a[data-neo-link].app-nav-link {
+a[data-neo-link]:where(:not([data-neo-link="false"])).app-nav-link {
 	justify-content: flex-start;
 }
 
@@ -563,7 +563,7 @@ header h1 {
 	justify-content: flex-start;
 }
 
-.datastar-toast-host > neo-toaster[contained] {
+.datastar-toast-host > neo-toaster[contained]:where(:not([contained="false"])) {
 	--neo-toaster-max-height:
 		calc(
 			100% -
@@ -609,7 +609,7 @@ header h1 {
 	}
 }
 
-.datastar-action-demo > neo-toaster[contained] {
+.datastar-action-demo > neo-toaster[contained]:where(:not([contained="false"])) {
 	--neo-toaster-max-height:
 		calc(
 			100% -
@@ -1063,8 +1063,8 @@ neo-input-group > .demo-input-group-operator {
 	min-width: 16rem;
 }
 
-.demo-frame-stage > neo-slider[vertical],
-.demo-frame-stage > neo-slider-range[vertical] {
+.demo-frame-stage > neo-slider[vertical]:where(:not([vertical="false"])),
+.demo-frame-stage > neo-slider-range[vertical]:where(:not([vertical="false"])) {
 	--neo-slider-vertical-track-length: 100%;
 	height: 100%;
 }

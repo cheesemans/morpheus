@@ -349,7 +349,7 @@ export class NeoSubmenu extends HTMLElement {
 		if (!this.#panel) return;
 		this.#items = Array.from(this.#panel.querySelectorAll<HTMLElement>(ITEM_SELECTOR))
 			.filter((el) => el.parentElement === this.#panel)
-			.filter((el) => !el.hasAttribute("disabled"));
+			.filter((el) => !boolAttr(el, "disabled", false));
 		this.#items.forEach((el, i) => {
 			el.tabIndex = i === 0 ? 0 : -1;
 		});

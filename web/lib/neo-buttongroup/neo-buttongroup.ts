@@ -165,14 +165,14 @@ export class NeoButtonGroup extends HTMLElement {
 	}
 
 	#focusableButtons(): HTMLElement[] {
-		return this.#buttons().filter((b) => !b.hasAttribute("disabled") && b.getAttribute("aria-disabled") !== "true");
+		return this.#buttons().filter((b) => !boolAttr(b, "disabled", false) && b.getAttribute("aria-disabled") !== "true");
 	}
 
 	#onClick = (e: MouseEvent) => {
 		if (!this.#segmented) return;
 		const btn = this.#buttons().find((b) => b === e.target || b.contains(e.target as Node));
 		if (!btn) return;
-		if (btn.hasAttribute("disabled") || btn.getAttribute("aria-disabled") === "true") {
+		if (boolAttr(btn, "disabled", false) || btn.getAttribute("aria-disabled") === "true") {
 			return;
 		}
 		const value = btn.getAttribute("value");

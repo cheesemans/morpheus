@@ -1,3 +1,4 @@
+import { boolAttr } from "../command";
 import { NavEngine } from "../nav-engine";
 
 // Thin element wrapper over the shared NavEngine: it owns lifecycle, the
@@ -113,7 +114,7 @@ export class NeoNavGroup extends HTMLElement {
 
 	#collectItems(): HTMLElement[] {
 		return Array.from(this.querySelectorAll<HTMLElement>("[data-neo-navgroup-item]")).filter((el) => {
-			if (el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true") return false;
+			if (boolAttr(el, "disabled", false) || el.getAttribute("aria-disabled") === "true") return false;
 			// Exclude items inside a NESTED <neo-navgroup> so the outer group
 			// doesn't claim the inner group's items.
 			return el.closest("neo-navgroup") === this;
