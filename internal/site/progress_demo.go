@@ -71,8 +71,8 @@ var progressIndeterminateHTML = renderExampleHTML(examples.ProgressIndeterminate
 var progressIndeterminateTempl string
 
 // Self-contained ping-pong demo. Keyframes and the part/animation
-// override are inlined in a scoped <style> block keyed off a unique
-// class, so the example works without any site-local CSS rule.
+// override live in the sibling .css, keyed off a unique class, so the
+// example works without any site-local CSS rule.
 var progressPingPongHTML = renderExampleHTML(examples.ProgressPingPong())
 
 //go:embed examples/progress_ping_pong.templ

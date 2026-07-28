@@ -63,9 +63,8 @@ var checkboxWithLabelTempl string
 //go:embed examples/checkbox_with_label.css
 var checkboxWithLabelCSS string
 
-// .checkbox-row's descendant rules (& > neo-checkbox, & > span > strong,
-// …) can't be inlined, so the row layout lives in a scoped <style> block
-// keyed by a unique class. The group/row base boxes stay inline.
+// .pg-checkbox-row's descendant rules (> neo-checkbox, > span > strong,
+// …) can't be inlined, so the whole row layout lives in the sibling .css.
 var checkboxSettingsGroupHTML = renderExampleHTML(examples.CheckboxSettingsGroup())
 
 //go:embed examples/checkbox_settings_group.templ

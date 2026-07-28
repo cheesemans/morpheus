@@ -81,8 +81,8 @@ var resizableStepTempl string
 var resizableStepCSS string
 
 // Custom-icon example: the author-supplied glyph sits where the default
-// lucide icon would; the scoped <style> only restyles its glyph size
-// (was `.resizable-example-custom-icon`), not its positioning.
+// lucide icon would; the sibling .css only restyles its glyph size, not
+// its positioning.
 var resizableCustomIconHTML = renderExampleHTML(examples.ResizableCustomIcon())
 
 //go:embed examples/resizable_custom_icon.templ

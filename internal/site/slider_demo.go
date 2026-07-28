@@ -87,8 +87,8 @@ var sliderEasingTempl string
 
 // sliderStarsHTML is self-sufficient: the star styling targets shadow
 // parts (neo-icon::part) and component-rendered track/anchor/thumb
-// elements that can't be reached by inline style, so a scoped <style>
-// block carries the rules, namespaced by `.slider-stars-pg`. One source
+// elements that can't be reached by inline style, so the sibling .css
+// carries the rules, namespaced by `.slider-stars-pg`. One source
 // drives both the Examples demo and the playground state.
 var sliderStarsHTML = renderExampleHTML(examples.SliderStars())
 
@@ -100,7 +100,7 @@ var sliderStarsCSS string
 
 // sliderValueBarHTML restyles the rail into a Blender-style value bar. The
 // styling reaches the shadow internals through neo-slider::part(...) and the
-// --neo-slider-* custom properties, so a scoped <style> block carries the
+// --neo-slider-* custom properties, so the sibling .css carries the
 // rules, namespaced by `.slider-value-bar-pg`. One source drives both the
 // Examples demo and the playground state.
 var sliderValueBarHTML = renderExampleHTML(examples.SliderValueBar())
