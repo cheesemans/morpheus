@@ -6,9 +6,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/examples"
 )
 
-// Static example sources for the Datalist page. Each example file is the
-// single source for both its live demo and its code tab.
-
 var datalistSharedHTML = renderExampleHTML(examples.DatalistShared())
 
 //go:embed examples/datalist_shared.templ

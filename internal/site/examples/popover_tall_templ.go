@@ -10,7 +10,6 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/romshark/morpheus/neo"
 
-// popoverTallCountries is inlined so the example is self-sufficient.
 var popoverTallCountries = []string{
 	"🇦🇫 Afghanistan", "🇦🇱 Albania", "🇩🇿 Algeria", "🇦🇩 Andorra",
 	"🇦🇴 Angola", "🇦🇬 Antigua and Barbuda", "🇦🇷 Argentina",
@@ -111,7 +110,7 @@ func PopoverTall() templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/examples/popover_tall.templ`, Line: 62, Col: 42}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/site/examples/popover_tall.templ`, Line: 61, Col: 42}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {

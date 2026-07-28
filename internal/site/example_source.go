@@ -10,10 +10,6 @@ import (
 	"github.com/romshark/morpheus/internal/site/htmlfmt"
 )
 
-// Single source for demo examples: each is one templ function under
-// examples/, driving the live preview and the rendered HTML tab; its
-// .templ file is embedded verbatim for the Templ tab.
-
 func renderExampleHTML(c templ.Component) string {
 	var b strings.Builder
 	if err := c.Render(context.Background(), &b); err != nil {
