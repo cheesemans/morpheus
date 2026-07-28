@@ -80,7 +80,7 @@ export class NeoElastic extends HTMLElement {
 				inner.appendChild(child);
 			}
 			this.appendChild(inner);
-		} else if (loose.length > 0) {
+		} else {
 			for (const child of loose) inner.appendChild(child);
 		}
 
