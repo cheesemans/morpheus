@@ -53,7 +53,7 @@ var optionDoc = ComponentDoc{
 		{Name: "label", Type: "string",
 			Description: templ.Raw("The option's plain-text label, used for type-to-search matching and as the trigger face when set (otherwise the control clones the option's body onto the trigger). Defaults to the content's trimmed text; set it when the body is rich markup or the searchable text should differ from the visible row.")},
 		{Name: "disabled", Type: "boolean",
-			Description: templ.Raw("Marks the option non-selectable and skips it during keyboard navigation. <code>aria-disabled=\"true\"</code> is honored the same way.")},
+			Description: templ.Raw("Marks the option non-selectable and skips it during keyboard navigation. When the attribute is absent, <code>aria-disabled=\"true\"</code> is honored the same way. An explicit <code>disabled=\"false\"</code> takes precedence and re-enables the option.")},
 	},
 	Slots: []DocSlot{
 		{Name: "default",

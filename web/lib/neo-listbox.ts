@@ -1,4 +1,4 @@
-import { boolAttr, openCommand } from "./command";
+import { boolAttr, boolCommand, openCommand } from "./command";
 import { setState } from "./internal-state";
 import { cloneDatalistOptionsInto, externalDatalistFor } from "./neo-datalist";
 import {
@@ -27,7 +27,10 @@ export function readOptionData(el: HTMLElement): OptionData {
 	return {
 		value: el.getAttribute("value") ?? el.getAttribute("data-neo-value") ?? "",
 		label: el.getAttribute("label") ?? el.textContent?.trim() ?? "",
-		disabled: el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true",
+		// `disabled` is a command: an explicit value wins over the ARIA hint.
+		// `disabled="false"` re-enables an option whose aria-disabled the
+		// wiring already stamped. Absent falls back to authored aria-disabled.
+		disabled: boolCommand(el, "disabled") ?? el.getAttribute("aria-disabled") === "true",
 		el,
 	};
 }
