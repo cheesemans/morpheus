@@ -43,11 +43,7 @@ templ PageGettingStarted(morpheusVersion string) {
 				Static assets
 			}
 			<p>
-				Grab the minified bundles from{ " " }
-				@neo.Link(neo.LinkOpts{Href: neo.Set("https://github.com/romshark/morpheus/tree/main/min"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
-					<code>/min/</code>
-				}
-				{ " " }in the repo:{ " " }
+				Three files:{ " " }
 				@neo.Link(neo.LinkOpts{Href: neo.Set("https://github.com/romshark/morpheus/blob/main/min/morpheus.css"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
 					<code>morpheus.css</code>
 				}
@@ -55,17 +51,39 @@ templ PageGettingStarted(morpheusVersion string) {
 				@neo.Link(neo.LinkOpts{Href: neo.Set("https://github.com/romshark/morpheus/blob/main/min/theme-default.css"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
 					<code>theme-default.css</code>
 				}
-				), and{ " " }
+				), and the component bundle{ " " }
 				@neo.Link(neo.LinkOpts{Href: neo.Set("https://github.com/romshark/morpheus/blob/main/min/bundle.js"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
 					<code>bundle.js</code>
 				}
-				. Then load them in your page head:
+				.{ " " }
+				@neo.Link(neo.LinkOpts{Href: neo.Set("https://www.jsdelivr.com"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
+					jsDelivr
+				}
+				{ " " }serves every tagged release straight from the
+				repository, so load them in your page head:
 			</p>
 			<div class="theming-source">
 				<site-codemirror language="html" readonly>
-					<template>{ gettingStartedInstallHTML }</template>
+					<template>{ gettingStartedInstall(morpheusVersion) }</template>
 				</site-codemirror>
 			</div>
+			<p>
+				Pin the tag, as above. jsDelivr also accepts
+				floating refs such as <code>{ "@latest" }</code>
+				and partial versions; those resolve to the newest
+				matching tag, so they pull in breaking changes.
+			</p>
+			<p>
+				To self-host instead, take the same files from{ " " }
+				@neo.Link(neo.LinkOpts{Href: neo.Set("https://github.com/romshark/morpheus/tree/main/min"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
+					<code>/min/</code>
+				}
+				{ " " }or from a{ " " }
+				@neo.Link(neo.LinkOpts{Href: neo.Set("https://github.com/romshark/morpheus/releases"), Target: neo.Set("_blank"), Rel: neo.Set("noopener noreferrer")}) {
+					release
+				}
+				{ " " }and serve them yourself.
+			</p>
 			<p>
 				The kit reads <code>:root</code> custom
 				properties of colours and shape: the theme

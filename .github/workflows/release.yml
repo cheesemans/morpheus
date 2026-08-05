@@ -1,0 +1,162 @@
+# Publish a tagged release and make it available on the jsDelivr CDN.
+#
+# jsDelivr serves files straight out of a GitHub tag, so /min/ (the tracked
+# deliverable directory) is reachable at
+#   https://cdn.jsdelivr.net/gh/romshark/morpheus@<tag>/min/<file>
+# the moment the tag is pushed. There is no upload step. What this workflow
+# guarantees instead:
+#   1. VERSION matches the tag, so the banner esbuild stamps into every
+#      bundle and the version the site renders agree with what is served.
+#   2. /min/ at the tag rebuilds byte-identically from the tagged sources,
+#      so the CDN cannot serve an artifact that no commit produces.
+#   3. The pinned CDN URLs actually resolve before the release is announced.
+#   4. The mutable aliases (@latest, @<major>.<minor>) are purged, since
+#      jsDelivr caches a range-to-tag resolution for up to 7 days and would
+#      otherwise keep pointing at the previous release.
+#
+# Pinned URLs (@v0.1.0) are immutable and cached permanently; only the
+# aliases need purging.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  # Re-run the publish/purge for a tag that already exists, e.g. after a
+  # failed CDN propagation check.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to (re-)publish"
+        required: true
+
+# gh release create writes to the repo.
+permissions:
+  contents: write
+
+# Never cancel a publish midway; a half-created release needs manual cleanup.
+concurrency:
+  group: release-${{ inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+env:
+  # The shippable kit, and the only files documented as CDN entry points.
+  # Site-only bundles (landing, bundle-builder, docs UI, CodeMirror,
+  # style.css) live in /min/ too but are not part of the release.
+  KIT_FILES: >-
+    min/bundle.js
+    min/morpheus.css
+    min/theme-default.css
+    min/theme-matrix.css
+    min/theme-ocean.css
+    min/theme-rose.css
+    min/theme-sunshine.css
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          # Full history so --generate-notes can diff against the previous tag.
+          fetch-depth: 0
+
+      - name: Resolve tag
+        run: echo "TAG=${{ inputs.tag || github.ref_name }}" >> "$GITHUB_ENV"
+
+      # VERSION carries the leading v (v0.1.0), matching the tag verbatim.
+      - name: VERSION matches the tag
+        run: |
+          version=$(tr -d '[:space:]' < VERSION)
+          if [ "$version" != "$TAG" ]; then
+            echo "VERSION is '$version' but the tag is '$TAG'."
+            echo "Update VERSION, rebuild, commit, and move the tag."
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+        working-directory: web
+
+      # The CDN serves the committed bytes, so those bytes must be what the
+      # tagged sources produce. CI enforces this on main; re-check here
+      # because a tag can point at any commit.
+      - name: Committed /min/ rebuilds from the tagged sources
+        run: pnpm run build
+        working-directory: web
+
+      - name: Check /min/ is reproducible
+        run: |
+          if [ -n "$(git status --porcelain min)" ]; then
+            echo "min/ at $TAG does not match its sources:"
+            git status --porcelain min
+            git diff -- min
+            exit 1
+          fi
+
+      # Pre-release for 0.x (the project is in open alpha) and for any tag
+      # carrying a suffix such as -rc1.
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          case "$TAG" in
+            v0.*|*-*) prerelease="--prerelease" ;;
+          esac
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; refreshing its assets."
+            gh release upload "$TAG" $KIT_FILES --clobber
+          else
+            gh release create "$TAG" $KIT_FILES \
+              --title "$TAG" \
+              --generate-notes \
+              $prerelease
+          fi
+
+      # jsDelivr resolves a gh tag through the GitHub API and caches the
+      # negative result briefly, so a just-pushed tag can 404 for a few
+      # seconds. Retry before failing.
+      - name: Pinned CDN URLs resolve
+        run: |
+          fail=0
+          for f in $KIT_FILES; do
+            url="https://cdn.jsdelivr.net/gh/${GITHUB_REPOSITORY}@${TAG}/${f}"
+            for attempt in 1 2 3 4 5 6; do
+              code=$(curl -fsS -o /dev/null -w '%{http_code}' "$url") && break
+              echo "attempt $attempt: $url -> ${code:-error}"
+              sleep 10
+            done
+            if [ "$code" = "200" ]; then
+              echo "ok   $url"
+            else
+              echo "FAIL $url -> ${code:-error}"
+              fail=1
+            fi
+          done
+          exit $fail
+
+      # Range URLs (@latest, @0.1) keep resolving to the previous tag for up
+      # to 7 days otherwise. Purging is best-effort: the pinned URLs above
+      # are the documented entry points, and purge.jsdelivr.net rate-limits.
+      - name: Purge the mutable jsDelivr aliases
+        continue-on-error: true
+        run: |
+          minor=${TAG#v}; minor=${minor%.*}
+          for alias in latest "$minor"; do
+            for f in $KIT_FILES; do
+              url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@${alias}/${f}"
+              echo "purging @${alias} ${f}"
+              curl -fsS -o /dev/null "$url" || echo "  purge failed (non-fatal)"
+            done
+          done

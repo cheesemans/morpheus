@@ -5,6 +5,26 @@
 
 Morpheus is an open alpha web component UI kit. It provides 48 components and 5 utility components, and targets server-driven architectures.
 
+## Install
+
+Three static assets: the base stylesheet, one theme stylesheet, and the component bundle. [jsDelivr](https://www.jsdelivr.com) serves every tagged release straight from this repository.
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/romshark/morpheus@v0.1.0/min/morpheus.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/romshark/morpheus@v0.1.0/min/theme-default.css"/>
+<script type="module" src="https://cdn.jsdelivr.net/gh/romshark/morpheus@v0.1.0/min/bundle.js"></script>
+```
+
+Pin the tag. Floating refs such as `@latest` resolve to the newest matching tag, so they pull in breaking changes. To self-host, take the same files from [`/min/`](min) or from a [release](https://github.com/romshark/morpheus/releases).
+
+The Go module carries the templ wrappers (`neo.Select`, `datastar.ComboboxAsync`, and one per component):
+
+```sh
+go get github.com/romshark/morpheus
+```
+
+See [Getting started](https://romshark.github.io/morpheus/getting-started/) for the walkthrough.
+
 ## Motivation
 
 Morpheus targets a server-centric stack of Go, [Templ](https://github.com/a-h/templ), and [Datastar](https://data-star.dev). [basecoatui](https://basecoatui.com) covers much of this stack but has limits: its [combobox](https://basecoatui.com/components/combobox/) cannot be patched from the server without corrupting internal JavaScript state, a fix that has been on its roadmap for some time.

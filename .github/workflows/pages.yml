@@ -11,7 +11,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# deploy-pages resolves the uploaded artifact by ID, which needs actions:read;
+# an explicit permissions block denies everything it does not list.
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -25,31 +28,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 11
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
           cache-dependency-path: web/pnpm-lock.yaml
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
       # make gen runs pnpm install, the esbuild bundle, templ generate,
       # then internal/cmd/gen. rsync is preinstalled on the runner.
       - name: Build static site for the /morpheus/ subpath
         run: make gen BASE=/morpheus
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dst
 
@@ -61,4 +64,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

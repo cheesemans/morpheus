@@ -1,10 +1,11 @@
 # Continuous integration: lint, type-check, build, and test on every push
 # to main and every pull request. Site deployment lives in pages.yml.
 #
-# Two jobs run in parallel. Each also verifies that the checked-in
-# generated artifacts it owns are reproducible:
-#   go  - the *_templ.go files (templ generate)
-#   web - the /min/ bundle and minified CSS (web/build.ts)
+# Three jobs run in parallel. The first two also verify that the checked-in
+# generated artifacts they own are reproducible:
+#   go      - the *_templ.go files (templ generate)
+#   web     - the /min/ bundle and minified CSS (web/build.ts)
+#   version - the release version documented in README.md
 name: CI
 
 on:
@@ -25,9 +26,9 @@ jobs:
   go:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
@@ -68,13 +69,13 @@ jobs:
       run:
         working-directory: web
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 11
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -97,5 +98,26 @@ jobs:
             echo "min/ is stale; run 'pnpm build' and commit ../min:"
             git status --porcelain ../min
             git diff ../min
+            exit 1
+          fi
+
+  # README hand-pins the jsDelivr URLs to a release tag, and VERSION is the
+  # single source for that tag (web/build.ts and internal/cmd/gen read it too).
+  # Catch a bumped VERSION with a stale README here, while it is still a normal commit;
+  # after the tag is pushed, fixing it means moving a published tag.
+  # The getting-started page interpolates VERSION at render, so it cannot drift.
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Documented CDN version matches VERSION
+        run: |
+          version=$(tr -d '[:space:]' < VERSION)
+          stale=$(grep -oE 'cdn\.jsdelivr\.net/gh/romshark/morpheus@[^/]+' README.md \
+            | grep -v "@${version}$" || true)
+          if [ -n "$stale" ]; then
+            echo "README pins a CDN version other than ${version}:"
+            echo "$stale"
             exit 1
           fi
